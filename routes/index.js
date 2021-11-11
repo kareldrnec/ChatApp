@@ -2,15 +2,15 @@ var express = require("express");
 var router = express.Router();
 var auth = require('../auth');
 
-router.get('/', function(req, res, next){
+router.get('/', auth.requiresLogin, function(req, res){
     res.render('index');
 });
 
-router.get('/about', function(req, res, next){
+router.get('/about', auth.requiresLogin, function(req, res){
     res.render('about');
 });
 
-router.get('/avatar', function(req, res, next){
+router.get('/avatar', auth.requiresLogin, function(req, res){
     res.render('avatar');
 });
 
