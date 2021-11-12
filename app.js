@@ -5,16 +5,20 @@ const app = express();
 const port = process.env.PORT || 3000;
 //handlebars
 const exphbs = require('express-handlebars');
-//router
-const router = express.Router();
 
 //idk
 const path = require('path');
 
-//mongoose
-var mongoose = require('mongoose');
+//var bodyParser = require('body-parser')
 
-//express-flash-message
+
+const session = require('express-session');
+const MongoStore = require('connect-mongodb-session')(session);
+
+
+
+
+
 
 //setting handlebars engine
 app.engine('handlebars', exphbs({
@@ -26,16 +30,53 @@ app.set('view engine', 'handlebars');
 
 app.use(express.static(path.join(__dirname, '/public')));
 
-//routing
-app.use('/', require('./routes/index'));
-app.use('/users', require('./routes/users'));
+//mongodb
+const InitiateMongoServer = require('./config/db');
+InitiateMongoServer();
+
+
+const store = new MongoStore({
+    uri: "mongodb+srv://user1234:user1234@cluster0.gr9ky.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    collection: "mySession"
+})
+
+app.use(session({
+    secret: 'SECRET KEY',
+    resave: false,
+    saveUninitialized: false,
+    store: store
+    }
+))
+
+//express-flash-message
+app.use((req, res, next) => {
+    if(req.session.flash){
+        res.locals.flash = req.session.flash;
+        delete req.session.flash;
+    }
+    next();
+});
+
+
+
+app.use(express.json());
+
+
+app.use(express.urlencoded({ extended: true }));
 
 
 //disable - mrknout na to
 //app.disable('x-powered-by');
 
 
+//routing
+app.use('/', require('./routes/index'));
+app.use('/users', require('./routes/users'));
+
+
+
 //app listen
 app.listen(port, () => {
     console.log('Example app listening at PORT 3000')
 });
+//module.exports = app;
