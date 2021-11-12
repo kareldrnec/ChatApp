@@ -79,3 +79,9 @@ exports.logout = function (req, res, next) {
         })
     }
 };
+
+exports.showUser = async (req, res) => {
+    let user = await UserModel.findById(req.session.userId);
+    console.log(user)
+    res.redirect('/')
+}
