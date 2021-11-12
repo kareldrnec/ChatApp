@@ -7,8 +7,45 @@
 </div>
 {{/if}}
 
+<div class="row">
+  <div class="col-2">
+    <h2>Tools</h2>
+    <button class="btn btn-primary">Chat</button>
+
+  </div>
+  <div class="col-6">
+    <form action="/posts/addNewPost" method="post">
+      <div class="form-group">
+        <label for="postInput">Posts</label>
+        <input type="text" class="form-control" id="postInput" name="postInput" aria-describedby="postHelp"
+          placeholder="What's new?">
+      </div>
+      <button type="submit" class="btn btn-primary">Add</button>
+    </form>
+    <hr class="solid">
+  </div>
+  <div class="col-4">
+    
+    <h2>Contacts</h2>
+    <ul>
+      <li>
+        karel
+      </li>
+      <li>
+        pepa
+      </li>
+      <li>
+        tom
+      </li>
+    </ul>
+    
+    
+    </div>
+</div>
+
+
 <script>
-    setTimeout(function() {
+  setTimeout(function () {
     $('#flash').remove();
-}, 3000); 
+  }, 3000);
 </script>

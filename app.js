@@ -72,6 +72,16 @@ app.use(express.urlencoded({ extended: true }));
 //routing
 app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
+app.use('/posts', require('./routes/posts'));
+
+//error page handlers
+//dodelat
+app.use((req, res, next) => {
+    res.status(400).render('error', {
+        title: "Error",
+        variable: "405"
+    });
+});
 
 
 

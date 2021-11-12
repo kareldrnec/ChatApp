@@ -29,6 +29,7 @@ exports.registerNewUser = async (req, res) => {
             password: hashedPsw
         })
         await user.save();
+        req.session.flash = { type: 'success', text: 'Your account was successfully created!'}
         res.redirect("/users/login");
     } catch (err) {
         console.log(err.message);

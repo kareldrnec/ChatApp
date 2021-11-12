@@ -1,9 +1,13 @@
+// routing of index pages
+
 var express = require("express");
 var router = express.Router();
 var auth = require('../auth');
 
 router.get('/', auth.requiresLogin, function(req, res){
-    res.render('index');
+    res.render('index', {
+        title: 'Home'
+    });
 });
 
 router.get('/about', auth.requiresLogin, function(req, res){
