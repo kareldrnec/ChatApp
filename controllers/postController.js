@@ -14,6 +14,7 @@ exports.addNewPost = async(req, res) => {
     } catch(err){
         console.log(err.message);
     }
+    req.session.flash = { type: 'success', text: 'New post was successfully added!'};
     res.redirect('/');
 };
 

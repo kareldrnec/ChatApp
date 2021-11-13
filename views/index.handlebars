@@ -16,13 +16,26 @@
   <div class="col-6">
     <form action="/posts/addNewPost" method="post">
       <div class="form-group">
-        <label for="postInput">Posts</label>
+        <label for="postInput">New Post</label>
         <input type="text" class="form-control" id="postInput" name="postInput" aria-describedby="postHelp"
           placeholder="What's new?">
       </div>
-      <button type="submit" class="btn btn-primary">Add</button>
+      <div class="text-right">
+        <button type="submit" class="btn btn-primary">Add Post</button>
+      </div>
     </form>
     <hr class="solid">
+    <div id="postsContent">
+      <h2>Posts</h2>
+      <ul>
+          {{#each posts}}
+            <li>
+              {{#each this}} {{@key}}: 1 {{/each}}
+            </li>
+          {{/each}}
+
+      </ul>
+    </div>
   </div>
   <div class="col-4">
     
