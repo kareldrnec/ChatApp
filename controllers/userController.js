@@ -81,8 +81,20 @@ exports.logout = function (req, res, next) {
     }
 };
 
+exports.myProfile = async (req, res) => {
+    let user = await UserModel.findById(req.session.userId);
+    res.render('myProfile', {
+        title: 'My profile',
+        name: user.userName,
+        surname: user.userSurname,
+        email: user.email
+    });
+};
+
+
+
 exports.showUser = async (req, res) => {
     let user = await UserModel.findById(req.session.userId);
     console.log(user)
-    res.redirect('/')
+    res.redirect("/");
 }
