@@ -36,7 +36,7 @@ InitiateMongoServer();
 
 
 const store = new MongoStore({
-    uri: "mongodb+srv://user1234:user1234@cluster0.gr9ky.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    uri: "mongodb+srv://user1234:user1234@cluster0.gr9ky.mongodb.net/PWA?retryWrites=true&w=majority",
     collection: "mySession"
 })
 

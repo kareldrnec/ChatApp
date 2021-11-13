@@ -85,7 +85,7 @@ exports.myProfile = async (req, res) => {
     let user = await UserModel.findById(req.session.userId);
     res.render('myProfile', {
         title: 'My profile',
-        name: user.userName,
+        username: user.userName,
         surname: user.userSurname,
         email: user.email
     });

@@ -22,6 +22,10 @@ var userSchema = new Schema({
         type: String,
         required: true
     },
+    personalInfo: {
+        type: String,
+        default: ""
+    },
     createdAt: {
         type: Date,
         default: Date.now()

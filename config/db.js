@@ -3,7 +3,7 @@
 const mongoose = require('mongoose');
 
 //mongoURI
-const mongoURI = "mongodb+srv://user1234:user1234@cluster0.gr9ky.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const mongoURI = "mongodb+srv://user1234:user1234@cluster0.gr9ky.mongodb.net/PWA?retryWrites=true&w=majority";
 
 const InitiateMongoServer = async () => {
     try {

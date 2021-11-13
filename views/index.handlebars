@@ -9,9 +9,9 @@
 
 <div class="row">
   <div class="col-2">
-    <h2>Tools</h2>
-    <button class="btn btn-primary">Chat</button>
-
+    <div class="text-center">
+      <button class="btn btn-primary">Chat</button>
+    </div>
   </div>
   <div class="col-6">
     <form action="/posts/addNewPost" method="post">
@@ -28,17 +28,17 @@
     <div id="postsContent">
       <h2>Posts</h2>
       <ul>
-          {{#each posts}}
-            <li>
-              {{#each this}} {{@key}}: 1 {{/each}}
-            </li>
-          {{/each}}
+        {{#each posts}}
+        <li>
+          {{#each this}} {{@key}}: 1 {{/each}}
+        </li>
+        {{/each}}
 
       </ul>
     </div>
   </div>
   <div class="col-4">
-    
+
     <h2>Contacts</h2>
     <ul>
       <li>
@@ -51,9 +51,9 @@
         tom
       </li>
     </ul>
-    
-    
-    </div>
+
+
+  </div>
 </div>
 
 
