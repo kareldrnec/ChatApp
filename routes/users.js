@@ -44,4 +44,6 @@ router.get("/newPhoto", auth.requiresLogin, (req, res) => {
     });
 });
 
+router.get("/deleteAccount", auth.requiresLogin, user_controller.deleteAccount);
+
 module.exports = router;

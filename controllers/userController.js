@@ -1,6 +1,7 @@
 //user controller
 
 const UserModel = require('../models/user');
+const PostModel = require('../models/post');
 const bcrypt = require('bcrypt');
 
 exports.registerNewUser = async (req, res) => {
@@ -110,6 +111,13 @@ exports.editPersonalInfo = async (req, res) => {
 };
 
 
+exports.deleteAccount = async (req, res) => {
+    //dodelat
+    console.log("Cau");
+    let user = await UserModel.findById(req.session.userId);
+    console.log(user)
+    res.redirect("/");
+};
 
 exports.showUser = async (req, res) => {
     let user = await UserModel.findById(req.session.userId);
