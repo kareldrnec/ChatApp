@@ -11,8 +11,4 @@ router.get('/about', auth.requiresLogin, function(req, res){
     res.render('about');
 });
 
-router.get('/avatar', auth.requiresLogin, function(req, res){
-    res.render('avatar');
-});
-
 module.exports = router;

@@ -95,12 +95,18 @@ exports.myProfile = async (req, res) => {
     });
 };
 
-exports.editMyProfile = async (req, res) => {
+exports.editPersonalInfo = async (req, res) => {
+
+    // dodelat try/catch
     console.log("Edit form")
-    res.redirect('/');
-    //dodelat
-
-
+    let query = {"_id": req.session.userId};
+    const personalInfoText = req.body.personalInfoText;
+    let update = {
+        personalInfo: personalInfoText
+    };
+    await UserModel.updateOne(query, update);
+    req.session.flash = { type: "success", text: "Your personal info was successfully updated!"};
+    res.redirect('/users/myProfile');
 };
 
 

@@ -36,6 +36,12 @@ router.get("/user", auth.requiresLogin, user_controller.showUser);
 
 router.get("/myProfile", auth.requiresLogin, user_controller.myProfile);
 
-router.post("/myProfile", auth.requiresLogin, user_controller.editMyProfile);
+router.post("/myProfile", auth.requiresLogin, user_controller.editPersonalInfo);
+
+router.get("/newPhoto", auth.requiresLogin, (req, res) => {
+    res.render("newPhoto", {
+        title: "New Photo"
+    });
+});
 
 module.exports = router;
