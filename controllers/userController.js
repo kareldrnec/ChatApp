@@ -95,6 +95,14 @@ exports.myProfile = async (req, res) => {
     });
 };
 
+exports.editMyProfile = async (req, res) => {
+    console.log("Edit form")
+    res.redirect('/');
+    //dodelat
+
+
+};
+
 
 
 exports.showUser = async (req, res) => {

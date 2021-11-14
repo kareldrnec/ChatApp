@@ -32,8 +32,10 @@ router.post("/register", user_controller.registerNewUser);
 // GET - router Logout
 router.get("/logout", user_controller.logout);
 
-router.get("/user", user_controller.showUser);
+router.get("/user", auth.requiresLogin, user_controller.showUser);
 
-router.get("/myProfile", user_controller.myProfile);
+router.get("/myProfile", auth.requiresLogin, user_controller.myProfile);
+
+router.post("/myProfile", auth.requiresLogin, user_controller.editMyProfile);
 
 module.exports = router;

@@ -16,10 +16,10 @@
             </div>
             <small>Personal Info</small>
             <p class="card-text">
-                {{#if info }}
-                    {{ info }}
-                {{ else }}
-                    No personal info :(
+                {{#if info}}
+                {{ info }}
+                {{else}}
+                No personal info :(
                 {{/if}}
             </p>
             <hr class="solid">
@@ -30,13 +30,67 @@
             {{ created }}
             <hr class="solid">
             <div class="text-center">
-                <button type="button" class="btn btn-primary"><i class="far fa-edit"></i> Information</button>
-                <button type="button" class="btn btn-primary"><i class="far fa-edit"></i> Photo</button>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#personalInfoModal"><i
+                        class="far fa-edit"></i> Information</button>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#profilePicModal"><i
+                        class="far fa-edit"></i> Photo</button>
             </div>
         </div>
     </div>
 </div>
 
-<script>
-    //username, surname, email
-</script>
+<!-- Modal 1/Edit personal info-->
+<div>
+    <div class="modal fade" id="personalInfoModal" tabindex="-1" role="dialog" aria-labelledby="personalInfoModal"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="personalInfoModal">Edit personal info</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div action="/users/myProfile" method="post">
+                <div class="modal-body">
+                    <form>
+                        <small>Personal info:</small>
+                        <textarea style="width: 100%; resize: none;" rows="5">
+                        {{#if info}}
+                        {{ info }}
+                        {{/if}}
+                    </textarea>
+                        <div class="text-center mb-3">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 2/Edit profile picture -->
+<div>
+    <div class="modal fade" id="profilePicModal" tabindex="-1" role="dialog" aria-labelledby="profilePicModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="profilePicModalLabel">Edit personal info</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <small>Personal info:</small>
+                    <textarea style="width: 100%;" rows="5">rartetrfeatfeatgfatgfae</textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
