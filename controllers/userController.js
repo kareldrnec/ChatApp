@@ -83,11 +83,15 @@ exports.logout = function (req, res, next) {
 
 exports.myProfile = async (req, res) => {
     let user = await UserModel.findById(req.session.userId);
+    let date = user.createdAt;
+    let stringDate = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
     res.render('myProfile', {
         title: 'My profile',
         username: user.userName,
         surname: user.userSurname,
-        email: user.email
+        email: user.email,
+        info: user.personalInfo,
+        created: stringDate
     });
 };
 

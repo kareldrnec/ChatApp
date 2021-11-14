@@ -1,3 +1,20 @@
 {{> navbar}}
 
-<h1>cau usere</h1>
+<div class="d-flex justify-content-center mt-5">
+    <div class="card" style="width: 18rem;">
+        <img class="card-img-top" src="/images/user.png" width="60" height="90" alt="Card image cap">
+        <div class="card-body">
+            <div class="text-center">
+                <h5 class="card-title">{{ username }} {{ surname }}</h5>
+            </div>
+            <small>Personal Info</small>
+            <textarea>Some quick example text to build on</textarea>
+            <hr class="solid">
+            <small>Email</small><br>
+            {{ email }}
+            <hr class="solid">
+            <small>On ChatApp since</small><br>
+            {{ created }}
+        </div>
+    </div>
+</div>

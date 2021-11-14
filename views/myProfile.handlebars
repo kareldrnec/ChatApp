@@ -1,15 +1,39 @@
 {{> navbar_index}}
 
+{{#if flash}}
+<div style="text-align: center" id="flash" class="alert alert-{{flash.type}}" role="alert">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <strong>{{flash.text}}</strong>
+</div>
+{{/if}}
 
-<div class="container-fluid bg">
-    <div class="row">
-        <div class="col-md-4 col-sm-4 col-xs-12"></div>
-        <div class="col-md-4 col-sm-4 col-xs-12">
-            <!--form start-->
-
-            <!--form end-->
+<div class="d-flex justify-content-center mt-5">
+    <div class="card" style="width: 18rem;">
+        <img class="card-img-top" src="/images/user.png" width="60" height="90" alt="Card image cap">
+        <div class="card-body">
+            <div class="text-center">
+                <h5 class="card-title">{{ username }} {{ surname }}</h5>
+            </div>
+            <small>Personal Info</small>
+            <p class="card-text">
+                {{#if info }}
+                    {{ info }}
+                {{ else }}
+                    No personal info :(
+                {{/if}}
+            </p>
+            <hr class="solid">
+            <small>Email</small><br>
+            {{ email }}
+            <hr class="solid">
+            <small>On ChatApp since</small><br>
+            {{ created }}
+            <hr class="solid">
+            <div class="text-center">
+                <button type="button" class="btn btn-primary"><i class="far fa-edit"></i> Information</button>
+                <button type="button" class="btn btn-primary"><i class="far fa-edit"></i> Photo</button>
+            </div>
         </div>
-        <div class="col-md-4 col-sm-4 col-xs-12"></div>
     </div>
 </div>
 
