@@ -1,0 +1,43 @@
+{{> navbar }}
+
+<div class="container-fluid bg pt-5">
+    <div class="row">
+        <div class="col-md-4 col-sm-4 col-xs-12"></div>
+        <div class="col-md-4 col-sm-4 col-xs-12">
+            <!--form start-->
+            <form class="form-container" action="/applySettings" method="POST">
+                <h2 class="text-center">{{i18n "settings"}}</h2>
+                <div class="form-group">
+                    <label for="labelForColors">{{i18n "nav color"}}</label>
+                    <select name="colors" class="form-control">
+                        <option value="default">{{i18n "default"}}</option>
+                        <option value="blue" style="background-color: lightskyblue;">{{i18n "blue"}}</option>
+                        <option value="red" style="background-color: lightcoral;">{{i18n "red"}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="labelForLanguages">{{i18n "language"}}</label>
+                    <select name="languages" id="languages" class="form-control">
+                        <option value="en">ENG ({{i18n "default"}})</option>
+                        <option value="cz">CZ</option>
+                    </select>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">{{i18n "save"}}</button>
+                    <button type="button" class="btn btn-primary">{{i18n "back"}}</button>
+                </div>
+            </form>
+            <!--form end-->
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-12"></div>
+    </div>
+</div>
+
+<script>
+    let element = document.getElementById("languages");
+    if("{{language_value}}") {
+        element.value = "{{language_value}}";
+    } else {
+        element.value = "en";
+    }
+</script>

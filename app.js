@@ -5,25 +5,51 @@ const app = express();
 const port = process.env.PORT || 3000;
 //handlebars
 const exphbs = require('express-handlebars');
+const http = require('http');
 
 //idk
 const path = require('path');
 
 //var bodyParser = require('body-parser')
 
+// socket.io priprava
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
+
+
+//i18n - locales
+const i18n = require('i18n');
+
+const cookieParser = require('cookie-parser')
 
 const session = require('express-session');
 const MongoStore = require('connect-mongodb-session')(session);
 
 
+//i18n configure
+i18n.configure({
+    locales: ['en', 'cz'],
+    cookie: 'locale',
+    directory: path.join(__dirname, '/locales'),
+    defaultLocale: 'en'
+})
 
+app.use(cookieParser());
+
+app.use(i18n.init);
 
 
 
 //setting handlebars engine
 app.engine('handlebars', exphbs({
     defaultLayout: 'main',
-    extname: '.handlebars'
+    extname: '.handlebars',
+    helpers: {
+        i18n: function(){
+            return i18n.__.apply(this, arguments);
+        }
+    }
 }));
 
 app.set('view engine', 'handlebars');
@@ -58,12 +84,9 @@ app.use((req, res, next) => {
 });
 
 
+app.use(express.urlencoded({ extended: false }));
 
 app.use(express.json());
-
-
-app.use(express.urlencoded({ extended: true }));
-
 
 //disable - mrknout na to
 //app.disable('x-powered-by');
@@ -72,7 +95,9 @@ app.use(express.urlencoded({ extended: true }));
 //routing
 app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
+// idk jestli nesmazat posts .. uvidime
 app.use('/posts', require('./routes/posts'));
+app.use('/conversations', require('./routes/conversations'));
 
 //error page handlers
 //dodelat
@@ -85,8 +110,15 @@ app.use((req, res, next) => {
 
 
 
+//socket.io
+io.on('connection', (socker) => {
+    console.log("a user connected");
+})
+
+
+
 //app listen
-app.listen(port, () => {
+server.listen(port, () => {
     console.log('Example app listening at PORT 3000')
 });
 //module.exports = app;

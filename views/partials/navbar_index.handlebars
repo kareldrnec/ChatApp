@@ -7,13 +7,30 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-    <div class="navbar-nav">
-      <a class="nav-item nav-link" href="/"><i class="fas fa-comment-dots"></i> Chats</a>
-      <a class="nav-item nav-link" href="/users/myProfile"><i class="fas fa-user"></i>
-        {{ username}}
-      </a>
-      <a class="nav-item nav-link" href="/about"><i class="fas fa-info-circle"></i> About</a>
-      <a class="nav-item nav-link" href="/users/logout"><i class="fas fa-sign-out-alt"></i> Log Out</a>
-    </div>
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/conversations/"><i class="fas fa-comment-dots"></i> {{i18n "chats"}}</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-cogs"></i> {{i18n "settings"}}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/settings"><i class="fas fa-cogs"></i> {{i18n "settings"}}</a>
+          <a class="dropdown-item" href="/about"><i class="fas fa-info-circle"></i> {{i18n "about app"}}</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-user"></i> {{ username }}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/users/myProfile"><i class="fas fa-user"></i> {{i18n "my profile"}}</a>
+          <a class="dropdown-item" href="/users/logout"><i class="fas fa-sign-out-alt"></i> {{i18n "log out"}}</a>
+        </div>
+      </li>
+    </ul>
   </div>
 </nav>
