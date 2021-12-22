@@ -1,7 +1,85 @@
 {{> navbar}}
 
 
-<script src="/socket.io/socket.io.js"></script>
+<div class="container-fluid bg pt-5">
+  <div class="row">
+    <div class="col-md-4 col-sm-4 col-xs-12"></div>
+    <div class="col-md-4 col-sm-4 col-xs-12">
+      <div class="text-center">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newChatModal">{{i18n "new chat"}}</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newGroupChatModal">Group
+          Chat</button>
+      </div>
+      <ul>
+        {{#each conversations}}
+          <li>{{this.conversationID}}</li>
+        {{/each}}
+      </ul>
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-12"></div>
+  </div>
+</div>
+
+<!-- Modal New Chat -->
+<div class="modal fade" id="newChatModal" tabindex="-1" role="dialog" aria-labelledby="newChatModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newChatModalLabel">{{i18n "new chat"}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="post" action="/conversations/createChat">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="chatWith">{{i18n "chat with"}}</label>
+            <select id="userSelect" name="userSelect" class="form-control">
+              {{#each users}}
+              <option value="{{this.userID}}">{{this.username}} {{this.surname}}</option>
+              {{/each}}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="username">Selected Friend</label>
+            <input type="text" name="username" value="{{users.0.username}} {{users.0.surname}}" id="username"
+              class="form-control" readonly>
+            <div class="text-center">
+              <a id="userDetails" href="/users/user/{{users.0.userID}}">Show Details About User</a>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">{{i18n "close"}}</button>
+          <input type="submit" value="{{i18n "choose"}}" id="submit" class="btn btn-primary">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal New Group Chat -->
+<div class="modal fade" id="newGroupChatModal" tabindex="-1" role="dialog" aria-labelledby="newChatModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newChatModalLabel">New Chat</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <script>
-  var socket = io();
+  document.getElementById("userSelect").addEventListener('change', (event) => {
+    var selectedIndex = event.target.selectedIndex;
+    document.getElementById("username").value = event.srcElement[selectedIndex].label;
+    document.getElementById("userDetails").href = "/users/user/" + event.target.value;
+  })
 </script>

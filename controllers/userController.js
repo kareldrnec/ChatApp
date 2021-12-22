@@ -120,7 +120,14 @@ exports.deleteAccount = async (req, res) => {
 };
 
 exports.showUser = async (req, res) => {
-    let user = await UserModel.findById(req.session.userId);
+    let user = await UserModel.findById(req.params.id);
+    let date = user.createdAt;
+    let stringDate = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
     console.log(user)
-    res.redirect("/");
+    return res.render("user", {
+        username: user.userName,
+        surname: user.userSurname,
+        email: user.email,
+        created: stringDate
+    });
 }

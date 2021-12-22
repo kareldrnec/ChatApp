@@ -3,13 +3,15 @@
 const express = require("express");
 const router = express.Router();
 const auth = require('../auth');
+const conversation_controller = require('../controllers/conversationController');
 
-router.get("/", auth.requiresLogin, function (req, res) {
-    res.render("conversations",
-        {
-            title: req.__("chats")
-        }
-    )
-})
+// route - get all conversations
+router.get("/", auth.requiresLogin, conversation_controller.showAll);
+
+// route - delete selected conversation
+router.get("/delete/:id", auth.requiresLogin, conversation_controller.delete);
+
+// route - create chat
+router.post("/createChat", auth.requiresLogin, conversation_controller.create);
 
 module.exports = router;
