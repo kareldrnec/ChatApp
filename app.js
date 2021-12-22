@@ -19,6 +19,16 @@ const message = require('./models/message')
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
+
+
+io.on("connection", (socket) => {
+    socket.on('chat message', (msg) => {
+        io.emit('chat message', msg);
+    });
+});
+
+
+
 const message_controller = require("./controllers/messageController");
 
 //i18n - locales
@@ -90,11 +100,6 @@ app.use((req, res, next) => {
 });
 
 
-io.on("connection", (socket) => {
-    socket.on('chat message', (msg) => {
-        io.emit('chat message', msg);
-    });
-});
 
 
 app.use(express.urlencoded({ extended: false }));
@@ -120,13 +125,6 @@ app.use((req, res, next) => {
         variable: "405"
     });
 });
-
-
-
-//socket.io
-io.on('connection', (socker) => {
-    console.log("a user connected");
-})
 
 
 
