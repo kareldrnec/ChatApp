@@ -2,6 +2,7 @@
 
 const ConversationModel = require('../models/conversation');
 const UserModel = require('../models/user');
+const MessageModel = require('../models/message');
 
 
 // show all conversations
@@ -26,10 +27,10 @@ exports.showAll = async (req, res) => {
             }
         }
     });
-    for(var i = 0; i < conversationsDB.length; i++){
+    for (var i = 0; i < conversationsDB.length; i++) {
         var members = conversationsDB[i].members;
-        for(var j = 0; j < members.length; j++) {
-            if(members[j].userID != (req.session.userId).toString()){
+        for (var j = 0; j < members.length; j++) {
+            if (members[j].userID != (req.session.userId).toString()) {
                 membersArr.push(members[j]);
             }
         }
@@ -40,11 +41,6 @@ exports.showAll = async (req, res) => {
         })
         membersArr = [];
     }
-
-    // smazat 
-    console.log(conversations)
-    console.log(conversations[0].conversationMembers)
-
     res.render("conversations", {
         title: req.__("chats"),
         users: users,
@@ -55,9 +51,11 @@ exports.showAll = async (req, res) => {
 // create a new conversation
 exports.create = async (req, res) => {
     // dodelat
+    let user = await UserModel.findById(req.session.userId);
     var membersArr = [];
     membersArr.push({
-        "userID": (req.session.userId).toString()
+        "userID": (user._id).toString(),
+        "username": user.userName + " " + user.userSurname
     });
     membersArr.push({
         "userID": req.body.userSelect,
@@ -72,8 +70,28 @@ exports.create = async (req, res) => {
 };
 
 exports.select = async (req, res) => {
+    //dodelat cas
+    var messages = [];
+    let sender = await UserModel.findById(req.session.userId)
+    let messagesDB = await MessageModel.find({
+        conversationID: req.params.id
+    })  
+    for (var i = 0; i < messagesDB.length; i++) {
+        let messageSender = await UserModel.findById(messagesDB[i].senderID);
+        messages.push({
+            "sender": messageSender.userName,
+            "text": messagesDB[i].text
+        })
+    }
+
+    console.log(messages)
+
     res.render("chat", {
-        title: req.params.id
+        title: req.__("conversation"),
+        senderID: (sender._id).toString(),
+        senderName: sender.userName,
+        conversationID: req.params.id,
+        messages: messages
     })
 }
 

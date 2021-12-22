@@ -12,6 +12,10 @@ var messageSchema = new Schema({
     },
     senderID: {
         type: String
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now()
     }
 });
 

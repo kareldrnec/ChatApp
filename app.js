@@ -11,7 +11,7 @@ const http = require('http');
 const path = require('path');
 
 
-const message = require('./models/message')
+const MessageModel = require('./models/message')
 
 //var bodyParser = require('body-parser')
 
@@ -22,8 +22,15 @@ const io = new Server(server);
 
 
 io.on("connection", (socket) => {
-    socket.on('chat message', (msg) => {
-        io.emit('chat message', msg);
+    socket.on('chat message', async(msg, senderName, senderID, conversationID) => {
+        io.emit('chat message', msg, senderName, senderID, conversationID);
+        let mes = new MessageModel({
+            text: msg,
+            conversationID: conversationID,
+            senderID: senderID
+        })
+        console.log(mes)
+        await mes.save()
     });
 });
 
