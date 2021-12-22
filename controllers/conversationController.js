@@ -6,8 +6,9 @@ const UserModel = require('../models/user');
 
 // show all conversations
 exports.showAll = async (req, res) => {
-    var users = [];
-    var conversations = [];
+    var users = [],
+        conversations = [],
+        membersArr = [];
     let usersDB = await UserModel.find({
         _id: { $ne: req.session.userId }
     });
@@ -25,11 +26,24 @@ exports.showAll = async (req, res) => {
             }
         }
     });
+    for(var i = 0; i < conversationsDB.length; i++){
+        var members = conversationsDB[i].members;
+        for(var j = 0; j < members.length; j++) {
+            if(members[j].userID != (req.session.userId).toString()){
+                membersArr.push(members[j]);
+            }
+        }
+        conversations.push({
+            "conversationID": conversationsDB[i]._id,
+            "conversationType": conversationsDB[i].type,
+            "conversationMembers": membersArr
+        })
+        membersArr = [];
+    }
 
-    console.log(conversationsDB)
-    conversationsDB.forEach(conversation => conversations.push({
-        "conversationID": conversation._id
-    }));
+    // smazat 
+    console.log(conversations)
+    console.log(conversations[0].conversationMembers)
 
     res.render("conversations", {
         title: req.__("chats"),
@@ -58,7 +72,9 @@ exports.create = async (req, res) => {
 };
 
 exports.select = async (req, res) => {
-
+    res.render("chat", {
+        title: req.params.id
+    })
 }
 
 // delete selected conversation

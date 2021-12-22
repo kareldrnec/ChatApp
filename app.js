@@ -10,13 +10,16 @@ const http = require('http');
 //idk
 const path = require('path');
 
+
+const message = require('./models/message')
+
 //var bodyParser = require('body-parser')
 
 // socket.io priprava
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
-
+const message_controller = require("./controllers/messageController");
 
 //i18n - locales
 const i18n = require('i18n');
@@ -46,8 +49,11 @@ app.engine('handlebars', exphbs({
     defaultLayout: 'main',
     extname: '.handlebars',
     helpers: {
-        i18n: function(){
+        i18n: function () {
             return i18n.__.apply(this, arguments);
+        },
+        ifEquals: function (value1, value2, options) {
+            return (value1 == value2) ? options.fn(this) : options.inverse(this);
         }
     }
 }));
@@ -71,16 +77,23 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     store: store
-    }
+}
 ))
 
 //express-flash-message
 app.use((req, res, next) => {
-    if(req.session.flash){
+    if (req.session.flash) {
         res.locals.flash = req.session.flash;
         delete req.session.flash;
     }
     next();
+});
+
+
+io.on("connection", (socket) => {
+    socket.on('chat message', (msg) => {
+        io.emit('chat message', msg);
+    });
 });
 
 

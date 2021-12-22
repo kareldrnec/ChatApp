@@ -9,6 +9,9 @@ var messageSchema = new Schema({
     },
     conversationID: {
         type: String
+    },
+    senderID: {
+        type: String
     }
 });
 

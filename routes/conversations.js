@@ -14,4 +14,8 @@ router.get("/delete/:id", auth.requiresLogin, conversation_controller.delete);
 // route - create chat
 router.post("/createChat", auth.requiresLogin, conversation_controller.create);
 
+// route - get chat
+router.get("/:id", auth.requiresLogin, conversation_controller.select);
+
+
 module.exports = router;
