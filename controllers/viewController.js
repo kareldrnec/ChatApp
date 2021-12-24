@@ -6,11 +6,11 @@ exports.getIndexPage = async(req, res) => {
 
     let user = await UserModel.findById(req.session.userId);
     let posts = await PostModel.find();
-    // console.log(posts);
+    console.log(posts);
     res.render('index', {
         title: req.__('home'),
         username: user.userName,
-        posts: JSON.stringify(posts)
+        posts: posts
     });
 };
   

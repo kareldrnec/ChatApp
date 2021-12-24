@@ -16,7 +16,7 @@
           <img src="/images/user.png" class="img-fluid rounded-circle" alt="">
         </div>
         <div class="pe-2">
-          <div class="card d-inline-block p-2 px-3 m-1">
+          <div class="card d-inline-block p-2 px-3 m-1 bg-primary text-white">
             {{this.sender}}<br>
             {{this.text}}
           </div>
@@ -29,7 +29,7 @@
         </div>
         <div class="pe-2">
           <div>
-            <div class="card d-inline-block p-2 px-3 m-1">
+            <div class="card d-inline-block p-2 px-3 m-1 bg-secondary text-white">
               {{this.sender}}<br>
               {{this.text}}
             </div>
@@ -77,15 +77,18 @@
     card.className = "card d-inline-block p-2 px-3 m-1";
     card.textContent = msg;
     if (senderID === "{{currentUser}}") {
-      item.className = "d-flex flex-row-reverse mb-4"
+      item.className = "d-flex flex-row-reverse mb-4";
+      card.classList.add('bg-primary');
     } else {
-      item.className = "d-flex flex-row mb-4"
+      item.className = "d-flex flex-row mb-4";
+      card.classList.add('bg-secondary');
     }
-    subitem.appendChild(card)
-    avatar.appendChild(img)
+    card.classList.add('text-white');
+    subitem.appendChild(card);
+    avatar.appendChild(img);
     item.appendChild(avatar);
     item.appendChild(subitem);
     cardsContent.appendChild(item);
-    window.scrollTo(0, document.body.scrollHeight);
+    cardsContent.scrollTop = cardsContent.scrollHeight;
   });
 </script>

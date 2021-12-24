@@ -9,12 +9,11 @@
 
 <div class="d-flex justify-content-center mt-5">
     <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="/images/user.png" width="60" height="90" alt="Card image cap">
         <div class="card-body">
             <div class="text-center">
                 <h5 class="card-title">{{ username }} {{ surname }}</h5>
             </div>
-            <small>Personal Info</small>
+            <small>{{i18n "personal info"}}</small>
             <p class="card-text">
                 {{#if info}}
                 {{ info }}
@@ -23,19 +22,18 @@
                 {{/if}}
             </p>
             <hr class="solid">
-            <small>Email</small><br>
+            <small>{{i18n "email"}}</small><br>
             {{ email }}
             <hr class="solid">
-            <small>On ChatApp since</small><br>
+            <small>{{i18n "on chatapp since"}}</small><br>
             {{ created }}
             <hr class="solid">
             <div class="text-center">
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#personalInfoModal"><i
-                        class="far fa-edit"></i> Information</button>
+                        class="far fa-edit"></i> {{i18n "information"}}</button>
                 <hr class="solid">
                 <button type="button" class="btn btn-primary" data-toggle="modal"
-                    data-target="#deleteAccountModal">Delete
-                    account</button>
+                    data-target="#deleteAccountModal">{{i18n "delete account"}}</button>
             </div>
         </div>
     </div>
@@ -48,14 +46,14 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="personalInfoModal">Edit personal info</h5>
+                    <h5 class="modal-title" id="personalInfoModal">{{i18n "edit personal info"}}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <form action="/users/myProfile" method="post">
-                        <small>Personal info:</small>
+                        <small>{{i18n "personal info"}}:</small>
                         <textarea style="width: 100%; resize: none;" rows="5" id="personalInfoText"
                             name="personalInfoText">
                         {{#if info}}
@@ -63,8 +61,8 @@
                         {{/if}}
                         </textarea>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{i18n "close"}}</button>
+                            <button type="submit" class="btn btn-primary">{{i18n "save changes"}}</button>
                         </div>
                     </form>
                 </div>

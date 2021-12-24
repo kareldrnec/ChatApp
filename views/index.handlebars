@@ -7,34 +7,31 @@
 </div>
 {{/if}}
 
-<div class="row">
-  <div class="col-2">
-  </div>
-  <div class="col-6">
-    <form action="/posts/addNewPost" method="post">
-      <div class="form-group">
-        <label for="postInput">New Post</label>
-        <input type="text" class="form-control" id="postInput" name="postInput" aria-describedby="postHelp"
-          placeholder="What's new?">
+
+
+<div class="container mt-4">
+  <div class="card mx-auto" style="max-width: 1000px;">
+    <div class="card-header bg-light">
+      <form id="form" action="">
+        <label>{{i18n "new post"}}</label>
+        <input class="form-control" placeholder="{{i18n "whats new"}}" id="input" autocomplete="off" />
+        <div class="text-right pt-1">
+          <button class="btn btn-primary">{{i18n "add post"}}</button>
+        </div>
+      </form>
+    </div>
+    <div class="card-body p-4" id="cardsContent" style="height: 800px;">
+      <div class="text-center">
+        <h2>{{i18n "posts"}}</h2>
       </div>
-      <div class="text-right">
-        <button type="submit" class="btn btn-primary">Add Post</button>
-      </div>
-    </form>
-    <hr class="solid">
-    <div id="postsContent">
-      <h2>Posts</h2>
       <ul>
         {{#each posts}}
         <li>
-          {{#each this}} {{@key}}: 1 {{/each}}
+          {{this}}
         </li>
         {{/each}}
-
       </ul>
     </div>
-  </div>
-  <div class="col-4">
   </div>
 </div>
 

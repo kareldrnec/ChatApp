@@ -5,10 +5,12 @@ var Schema = mongoose.Schema;
 
 var conversationSchema = new Schema({
     type: {
-        type: String
+        type: String,
+        required: true
     },
     members: {
-        type: Array
+        type: Array,
+        required: true
     },
     createdAt: {
         type: Date,

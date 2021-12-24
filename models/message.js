@@ -5,13 +5,16 @@ var Schema = mongoose.Schema;
 
 var messageSchema = new Schema({
     text: {
-        type: String
+        type: String,
+        required: true
     },
     conversationID: {
-        type: String
+        type: String,
+        required: true
     },
     senderID: {
-        type: String
+        type: String,
+        required: true
     },
     createdAt: {
         type: Date,

@@ -62,7 +62,7 @@ exports.loginUser = async (req, res) => {
     }
 
     req.session.userId = user._id;
-    req.session.flash = { type: 'success', text: 'You successfully logged in! Welcome ' + user.userName + '! :)'}
+    req.session.flash = { type: 'success', text: req.__('logged in') + user.userName + '! :)'}
 
     return res.redirect("/");
 
