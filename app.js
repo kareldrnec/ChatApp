@@ -6,14 +6,11 @@ const port = process.env.PORT || 3000;
 //handlebars
 const exphbs = require('express-handlebars');
 const http = require('http');
-
-//idk
 const path = require('path');
 
 
 const MessageModel = require('./models/message')
 
-//var bodyParser = require('body-parser')
 
 // socket.io priprava
 const server = http.createServer(app);
@@ -32,6 +29,9 @@ io.on("connection", (socket) => {
         console.log(mes)
         await mes.save()
     });
+    // dodelat mozna typing...
+    
+    // dodelat pro posts
 });
 
 

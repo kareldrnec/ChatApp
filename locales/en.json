@@ -8,7 +8,9 @@
 	"close": "Close",
 	"conversation": "Conversation",
 	"default": "Default",
+	"delete": "Delete",
 	"email": "Email",
+	"group chat": "Group Chat",
 	"home": "Home",
 	"language": "Language",
 	"login": "Login",
@@ -17,9 +19,13 @@
 	"nav color": "Nav Color",
 	"new chat": "New Chat",
 	"on chatapp since": "On ChatApp since",
+	"open": "Open",
 	"personal info": "Personal Info",
 	"red": "Red",
 	"save": "Save",
+	"selected friend": "Selected Friend",
 	"send": "Send",
-	"settings": "Settings"
+	"settings": "Settings",
+	"show user details": "Show Details About User",
+	"write a message": "Write a Message..."
 }

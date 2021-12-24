@@ -38,11 +38,6 @@ router.get("/myProfile", auth.requiresLogin, user_controller.myProfile);
 
 router.post("/myProfile", auth.requiresLogin, user_controller.editPersonalInfo);
 
-router.get("/newPhoto", auth.requiresLogin, (req, res) => {
-    res.render("newPhoto", {
-        title: "New Photo"
-    });
-});
 
 router.get("/deleteAccount", auth.requiresLogin, user_controller.deleteAccount);
 

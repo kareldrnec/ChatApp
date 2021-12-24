@@ -79,17 +79,27 @@ exports.select = async (req, res) => {
     for (var i = 0; i < messagesDB.length; i++) {
         let messageSender = await UserModel.findById(messagesDB[i].senderID);
         messages.push({
+            "senderID": (messageSender._id).toString(),
             "sender": messageSender.userName,
-            "text": messagesDB[i].text
+            "text": messagesDB[i].text,
+            "userID": (req.session.userId).toString()
         })
     }
 
     console.log(messages)
+    console.log((sender._id).toString())
+    console.log((req.session.userId).toString())
+    console.log(sender.userName)
+
+
+
+
 
     res.render("chat", {
         title: req.__("conversation"),
-        senderID: (sender._id).toString(),
+        //senderID: (sender._id).toString(),
         senderName: sender.userName,
+        currentUser: (req.session.userId).toString(),
         conversationID: req.params.id,
         messages: messages
     })
@@ -97,12 +107,19 @@ exports.select = async (req, res) => {
 
 // delete selected conversation
 exports.delete = async (req, res) => {
-
+    // dodelat
+    console.log("Chci smazat")
+    console.log(req.params.id);
+    console.log("---------")
+    // mazu zpravy
+    await MessageModel.deleteMany({
+        conversationID: req.params.id
+    })
+    // mazu konverzaci
+    await ConversationModel.findByIdAndDelete(req.params.id)
+    
+  //  console.log(messages)
+    req.session.flash = { type: 'success', text: 'Conversation was successfully deleted!'}
+    return res.redirect("/conversations")
 
 };
-
-// show details of selected conversation
-exports.showDetails = async (req, res) => {
-
-
-}

@@ -8,7 +8,9 @@
     "close": "Zavřít",
     "conversation": "Konverzace",
     "default": "Výchozí",
+    "delete": "Smazat",
     "email": "Email",
+    "group chat": "Skupinový chat",
     "home": "Domů",
     "language": "Jazyk",
     "login": "Přihlášení",
@@ -17,9 +19,13 @@
     "nav color": "Barva lišty",
     "new chat": "Nová konverzace",
     "on chatapp since": "Na ChatApp od",
+    "open": "Otevřít",
     "personal info": "Osobní údaje",
     "red": "Červená",
     "save": "Uložit",
+    "selected friend": "Zvolený přítel",
     "send": "Odeslat",
-    "settings": "Nastavení"
+    "settings": "Nastavení",
+    "show user details": "Zobrazit informace o uživateli.",
+    "write a message": "Napište zprávu..."
 }
