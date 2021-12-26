@@ -2,7 +2,7 @@
 
 const UserModel = require('../models/user');
 const PostModel = require('../models/post');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 exports.registerNewUser = async (req, res) => {
     //generating salt
