@@ -20,24 +20,122 @@
         </div>
       </form>
     </div>
-    <div class="card-body p-4" id="cardsContent" style="height: 800px;">
+    <div class="card-body p-4" style="height: 800px; overflow: auto;">
       <div class="text-center">
         <h2>{{i18n "posts"}}</h2>
       </div>
-      <ul>
+      <div class="text-right">
+        <label for="sort">{{i18n "sort by"}}</label>
+        <select name="sort" id="sort">
+          <option value="newest">{{i18n "newest"}}</option>
+          <option value="oldest">{{i18n "oldest"}}</option>
+        </select>
+      </div>
+      <div id="cardsContent">
+
         {{#each posts}}
-        <li>
-          {{this}}
-        </li>
+        <div class="card mx-auto pt-1">
+          <div class="card-header bg-light">
+
+            <div class="d-flex flex-row">
+              <div class="position-relative avatar">
+                <img src="/images/user.png" class="img-fluid rounded-circle" alt="">
+              </div>
+              <div class="pl-2">
+                {{#ifEquals this.userID this.currentUserID}}
+                <a href="/users/myProfile">{{this.username}} {{this.usersurname}}</a>
+                {{else}}
+                <a href="/users/user/{{this.userID}}">{{this.username}} {{this.usersurname}}</a>
+                {{/ifEquals}}
+                <br>
+                {{this.created}}
+              </div>
+            </div>
+
+
+          </div>
+          <div class="card-body">
+            {{this.postContent}}
+          </div>
+        </div>
         {{/each}}
-      </ul>
+
+
+      </div>
     </div>
   </div>
 </div>
 
 
+
+<script src="/socket.io/socket.io.js"></script>
 <script>
   setTimeout(function () {
     $('#flash').remove();
   }, 3000);
+  var socket = io();
+  var form = document.getElementById('form');
+  var input = document.getElementById('input');
+  var cards_content = document.getElementById('cardsContent');
+  var sortSelect = document.getElementById('sort');
+  sortSelect.addEventListener('change', function () {
+    for (var i = 1; i < cards_content.childNodes.length; i++) {
+      cards_content.insertBefore(cards_content.childNodes[i], cards_content.firstChild);
+    }
+  })
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (input.value) {
+      socket.emit("new post", input.value, "{{userID}}", "{{username}}");
+      input.value = '';
+    }
+  });
+  socket.on('new post', function (post, senderID, senderName) {
+    var item = document.createElement('div');
+    var card_header = document.createElement('div');
+    var flex_div = document.createElement('div');
+    var sub_flex_div = document.createElement('div');
+    var avatar = document.createElement('div');
+    var img = document.createElement('img');
+    var card_body = document.createElement('div');
+    var name_ref = document.createElement('a');
+    var br = document.createElement('br');
+    var date = new Date();
+    var text = document.createTextNode(date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes())
+    item.className = "card mx-auto";
+    flex_div.className = "d-flex flex-row";
+    sub_flex_div.className = "pl-2";
+    card_header.className = "card-header bg-light";
+    avatar.className = "position-relative avatar";
+    img.className = "img-fluid rounded-circle";
+    img.src = "/images/user.png";
+    img.alt = "";
+    avatar.appendChild(img);
+    flex_div.appendChild(avatar)
+    if ("{{userID}}" == senderID) {
+      name_ref.href = "/users/myProfile"
+    } else {
+      name_ref.href = "/users/user/" + senderID;
+    }
+    name_ref.textContent = senderName;
+    sub_flex_div.appendChild(name_ref);
+    sub_flex_div.appendChild(br);
+    sub_flex_div.appendChild(text)
+    flex_div.appendChild(sub_flex_div)
+    card_header.appendChild(flex_div);
+    card_body.className = "card-body";
+    card_body.textContent = post;
+    item.appendChild(card_header)
+    item.appendChild(card_body)
+    if (sortSelect.value == "newest") {
+      cards_content.prepend(item);
+    } else {
+      cards_content.appendChild(item);
+    }
+    var origcolor = card_body.style.backgroundColor;
+    card_body.style.backgroundColor = "yellow"
+    setTimeout(function(){
+      card_body.style.backgroundColor = origcolor;
+    }, 3000)
+  });
 </script>

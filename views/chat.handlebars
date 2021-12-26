@@ -16,8 +16,8 @@
           <img src="/images/user.png" class="img-fluid rounded-circle" alt="">
         </div>
         <div class="pe-2">
-          <div class="card d-inline-block p-2 px-3 m-1 bg-primary text-white">
-            {{this.sender}}<br>
+          <div class="card d-inline-block p-2 px-3 m-1 bg-primary text-white" data-toggle="tooltip" data-placement="top" title="{{this.createdAt}}">
+            Me:<br>
             {{this.text}}
           </div>
         </div>
@@ -29,8 +29,8 @@
         </div>
         <div class="pe-2">
           <div>
-            <div class="card d-inline-block p-2 px-3 m-1 bg-secondary text-white">
-              {{this.sender}}<br>
+            <div class="card d-inline-block p-2 px-3 m-1 bg-secondary text-white" data-toggle="tooltip" data-placement="top" title="{{this.createdAt}}">
+              {{this.sender}}:<br>
               {{this.text}}
             </div>
           </div>
@@ -57,6 +57,7 @@
   var form = document.getElementById('form');
   var input = document.getElementById('input');
   var cardsContent = document.getElementById("cardsContent");
+  cardsContent.scrollTop = cardsContent.scrollHeight;
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     if (input.value) {
@@ -67,10 +68,10 @@
   socket.on('chat message', function (msg, senderName, senderID) {
     var item = document.createElement('div');
     var avatar = document.createElement('div');
-    avatar.className = "position-relative avatar"
     var img = document.createElement('img');
     var subitem = document.createElement('div');
     var card = document.createElement('div');
+    avatar.className = "position-relative avatar";
     img.src = "/images/user.png";
     img.className = "img-fluid rounded-circle";
     img.alt = "";

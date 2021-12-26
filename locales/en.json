@@ -22,8 +22,10 @@
 	"log out": "Log Out",
 	"my profile": "My Profile",
 	"nav color": "Nav Color",
+	"newest": "Newest",
 	"new chat": "New Chat",
 	"new post": "New Post",
+	"oldest": "Oldest",
 	"on chatapp since": "On ChatApp since",
 	"open": "Open",
 	"personal info": "Personal Info",
@@ -35,7 +37,7 @@
 	"send": "Send",
 	"settings": "Settings",
 	"show user details": "Show Details About User",
+	"sort by": "Sort By",
 	"whats new": "What's new?",
-	"write a message": "Write a Message...",
-	"add": "add"
+	"write a message": "Write a Message..."
 }

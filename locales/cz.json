@@ -22,8 +22,10 @@
     "log out": "Odhlásit se",
     "my profile": "Můj profil",
     "nav color": "Barva lišty",
+    "newest": "Nejnovějších",
     "new chat": "Nová konverzace",
     "new post": "Nový příspěvek",
+    "oldest": "Nejstarších",
     "on chatapp since": "Na ChatApp od",
     "open": "Otevřít",
     "personal info": "Osobní údaje",
@@ -35,6 +37,7 @@
     "send": "Odeslat",
     "settings": "Nastavení",
     "show user details": "Zobrazit informace o uživateli.",
+    "sort by": "Seřadit od",
     "whats new": "Co je nového?",
     "write a message": "Napište zprávu..."
 }

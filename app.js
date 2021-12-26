@@ -9,8 +9,8 @@ const http = require('http');
 const path = require('path');
 
 
-const MessageModel = require('./models/message')
-
+const MessageModel = require('./models/message');
+const PostModel = require('./models/post');
 
 // socket.io priprava
 const server = http.createServer(app);
@@ -29,6 +29,15 @@ io.on("connection", (socket) => {
         console.log(mes)
         await mes.save()
     });
+    socket.on('new post', async(post, userID, username) => {
+        io.emit('new post', post, userID, username);
+        let postDB = new PostModel({
+            userID: userID,
+            postContent: post
+        })
+        console.log(postDB)
+        await postDB.save();
+    })
     // dodelat mozna typing...
     
     // dodelat pro posts

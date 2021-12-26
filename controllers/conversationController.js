@@ -76,13 +76,16 @@ exports.select = async (req, res) => {
     let messagesDB = await MessageModel.find({
         conversationID: req.params.id
     })  
+    
     for (var i = 0; i < messagesDB.length; i++) {
         let messageSender = await UserModel.findById(messagesDB[i].senderID);
+        let date = messagesDB[i].createdAt;
         messages.push({
             "senderID": (messageSender._id).toString(),
             "sender": messageSender.userName,
             "text": messagesDB[i].text,
-            "userID": (req.session.userId).toString()
+            "userID": (req.session.userId).toString(),
+            "createdAt": date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes()
         })
     }
 
