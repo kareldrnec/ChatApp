@@ -10,6 +10,7 @@ exports.showAll = async (req, res) => {
     var users = [],
         conversations = [],
         membersArr = [];
+    let currentUser = await UserModel.findById(req.session.userId);
     let usersDB = await UserModel.find({
         _id: { $ne: req.session.userId }
     });
@@ -44,6 +45,7 @@ exports.showAll = async (req, res) => {
     res.render("conversations", {
         title: req.__("chats"),
         users: users,
+        username: currentUser.userName + " " + currentUser.userSurname,
         conversations: conversations
     });
 }
@@ -70,7 +72,6 @@ exports.create = async (req, res) => {
 };
 
 exports.select = async (req, res) => {
-    //dodelat cas
     var messages = [];
     let sender = await UserModel.findById(req.session.userId)
     let messagesDB = await MessageModel.find({
@@ -88,15 +89,6 @@ exports.select = async (req, res) => {
             "createdAt": date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes()
         })
     }
-
-    console.log(messages)
-    console.log((sender._id).toString())
-    console.log((req.session.userId).toString())
-    console.log(sender.userName)
-
-
-
-
 
     res.render("chat", {
         title: req.__("conversation"),

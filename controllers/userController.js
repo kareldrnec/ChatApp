@@ -60,14 +60,9 @@ exports.loginUser = async (req, res) => {
             msg: "Spatne heslo"
         });
     }
-
     req.session.userId = user._id;
     req.session.flash = { type: 'success', text: req.__('logged in') + user.userName + '! :)'}
-
     return res.redirect("/");
-
-
-
 };
 
 exports.logout = function (req, res, next) {
@@ -87,9 +82,8 @@ exports.myProfile = async (req, res) => {
     let date = user.createdAt;
     let stringDate = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
     res.render('myProfile', {
-        title: 'My profile',
-        username: user.userName,
-        surname: user.userSurname,
+        title: req.__('my profile'),
+        username: user.userName + " " + user.userSurname,
         email: user.email,
         info: user.personalInfo,
         created: stringDate

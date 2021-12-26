@@ -22,8 +22,6 @@ exports.getIndexPage = async(req, res) => {
             "created": date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes()
         })
     }
-    console.log(posts);
-    console.log(currentUser._id)
     res.render('index', {
         title: req.__('home'),
         userID: currentUser._id,
