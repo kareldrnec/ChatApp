@@ -30,6 +30,15 @@ exports.getIndexPage = async(req, res) => {
     });
 };
   
+exports.getSettings = async(req, res) => {
+    let currentUser = await UserModel.findById(req.session.userId);
+    return res.render('settings', {
+        title: req.__("settings"),
+        language_value: req.cookies.locale,
+        username: currentUser.userName + " " + currentUser.userSurname
+    })
+}
+
 exports.applySettings = function(req, res) {
     //Dodelat, mozna zmena barvy
     res.cookie("locale", req.body.languages);
