@@ -1,38 +1,32 @@
-//express
+//express - app.js
 const express = require('express');
 const app = express();
-//setting port
 const port = process.env.PORT || 3000;
-//handlebars
 const exphbs = require('express-handlebars');
 const http = require('http');
 const path = require('path');
-
-
+const i18n = require('i18n');
+const cookieParser = require('cookie-parser')
+const session = require('express-session');
+const MongoStore = require('connect-mongodb-session')(session);
+const InitiateMongoServer = require('./config/db');
+// Models...
 const MessageModel = require('./models/message');
 const PostModel = require('./models/post');
 
 // socket.io priprava
 const server = http.createServer(app);
 const { Server } = require("socket.io");
-
 //app listen
 server.listen(port, () => {
     console.log('Example app listening at PORT 3000')
 });
 
 const io = new Server(server);
-
-
 io.on("connection", (socket) => {
-
     socket.on('room', function(room) {
-        console.log("Room")
-        console.log(room)
-        socket.join(room);
-        console.log(socket.rooms)
-    })
-
+        socket.join(room)
+    });
     socket.on('chat message', async (msg, senderName, senderID, conversationID) => {
         io.emit('chat message', msg, senderName, senderID, conversationID);
         let mes = new MessageModel({
@@ -40,31 +34,27 @@ io.on("connection", (socket) => {
             conversationID: conversationID,
             senderID: senderID
         })
-        console.log(mes)
         await mes.save()
     });
     socket.on('typing', (room, name, key) => {
         socket.in(room).emit("display typing", name, key)
-    })
+    });
     socket.on('new post', async (post, userID, username) => {
         io.emit('new post', post, userID, username);
         let postDB = new PostModel({
             userID: userID,
             postContent: post
         })
-        console.log(postDB)
         await postDB.save();
     })
+    //TODO
+    socket.on('delete post', async(post) => {
+
+    });
+    socket.on('edit post', async(post) => {
+
+    })
 });
-
-//i18n - locales
-const i18n = require('i18n');
-
-const cookieParser = require('cookie-parser')
-
-const session = require('express-session');
-const MongoStore = require('connect-mongodb-session')(session);
-
 
 //i18n configure
 i18n.configure({
@@ -73,12 +63,8 @@ i18n.configure({
     directory: path.join(__dirname, '/locales'),
     defaultLocale: 'en'
 })
-
 app.use(cookieParser());
-
 app.use(i18n.init);
-
-
 
 //setting handlebars engine
 app.engine('handlebars', exphbs({
@@ -99,9 +85,7 @@ app.set('view engine', 'handlebars');
 app.use(express.static(path.join(__dirname, '/public')));
 
 //mongodb
-const InitiateMongoServer = require('./config/db');
 InitiateMongoServer();
-
 
 const store = new MongoStore({
     uri: "mongodb+srv://user1234:user1234@cluster0.gr9ky.mongodb.net/PWA?retryWrites=true&w=majority",
@@ -124,16 +108,11 @@ app.use((req, res, next) => {
     next();
 });
 
-
-
-
 app.use(express.urlencoded({ extended: false }));
-
 app.use(express.json());
 
 //disable - mrknout na to
 //app.disable('x-powered-by');
-
 
 //routing
 app.use('/', require('./routes/index'));

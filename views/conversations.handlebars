@@ -7,8 +7,6 @@
 </div>
 {{/if}}
 
-
-
 <div class="container-fluid bg pt-3">
   <div class="row">
     <div class="col-md-4 col-sm-4 col-xs-12"></div>
@@ -32,8 +30,16 @@
             <p class="card-text">It's a broader card with text below as a natural lead-in to extra content. This content
               is a little longer.</p>
             <div class="text-center">
-              <a href="/conversations/{{this.conversationID}}" class="btn btn-primary"><i class="fas fa-hand-pointer"></i> {{i18n "choose"}}</a>
-              <a href="/conversations/delete/{{this.conversationID}}" class="btn btn-primary"><i class="fas fa-trash-alt"></i></a>
+              <a href="/conversations/{{this.conversationID}}" class="btn btn-primary">
+                {{#with ..}}
+                {{i18n "choose"}}
+                {{/with}}
+              </a>
+              <a href="/conversations/delete/{{this.conversationID}}" class="btn btn-primary">
+                {{#with ..}}
+                {{i18n "delete"}}
+                {{/with}}
+              </a>
             </div>
           </div>
         </div>
@@ -76,13 +82,12 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">{{i18n "close"}}</button>
-          <input type="submit" value="{{i18n "choose"}}" id="submit" class="btn btn-primary">
+          <input type="submit" value="{{i18n " choose"}}" id="submit" class="btn btn-primary">
         </div>
       </form>
     </div>
   </div>
 </div>
-
 
 <!-- Modal New Group Chat -->
 <div class="modal fade" id="newGroupChatModal" tabindex="-1" role="dialog" aria-labelledby="newChatModalLabel"
@@ -98,7 +103,6 @@
     </div>
   </div>
 </div>
-
 
 <script>
   document.getElementById("userSelect").addEventListener('change', (event) => {
