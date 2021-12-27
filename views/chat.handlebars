@@ -16,7 +16,8 @@
           <img src="/images/user.png" class="img-fluid rounded-circle" alt="">
         </div>
         <div class="pe-2">
-          <div class="card d-inline-block p-2 px-3 m-1 bg-primary text-white" data-toggle="tooltip" data-placement="top" title="{{this.createdAt}}">
+          <div class="card d-inline-block p-2 px-3 m-1 bg-primary text-white" data-toggle="tooltip" data-placement="top"
+            title="{{this.createdAt}}">
             Me:<br>
             {{this.text}}
           </div>
@@ -29,7 +30,8 @@
         </div>
         <div class="pe-2">
           <div>
-            <div class="card d-inline-block p-2 px-3 m-1 bg-secondary text-white" data-toggle="tooltip" data-placement="top" title="{{this.createdAt}}">
+            <div class="card d-inline-block p-2 px-3 m-1 bg-secondary text-white" data-toggle="tooltip"
+              data-placement="top" title="{{this.createdAt}}">
               {{this.sender}}:<br>
               {{this.text}}
             </div>
@@ -38,9 +40,9 @@
       </div>
       {{/ifEquals}}
       {{/each}}
-
     </div>
     <div class="card-footer bg-light position-relative bottom-0 m-0 p-1">
+      <div class="text-left" id="typingEcho" style="height: 25px;"></div>
       <form id="form" action="">
         <input class="form-control" placeholder="{{i18n "write a message"}}" id="input" autocomplete="off" />
         <div class="text-right pt-1">
@@ -65,6 +67,30 @@
       input.value = '';
     }
   });
+
+  input.addEventListener('keydown', function (e) {
+    socket.emit("typing", "{{conversationID}}", "{{senderName}}", 1);
+  });
+
+  input.addEventListener('keyup', function (e) {
+    socket.emit("typing", "{{conversationID}}", "{{senderName}}", 0);
+  });
+
+  socket.on('connect', function () {
+    socket.emit('room', "{{conversationID}}")
+  });
+
+  socket.on('display typing', function (name, key) {
+    var typingEcho = document.getElementById("typingEcho");
+    if(key == 1) {
+      typingEcho.textContent = name + " " + "{{i18n "is writing"}}";
+    } else {
+      setTimeout(function(){
+        typingEcho.textContent = "";
+      }, 3000);
+    }
+  });
+
   socket.on('chat message', function (msg, senderName, senderID) {
     var item = document.createElement('div');
     var avatar = document.createElement('div');

@@ -19,7 +19,15 @@ const io = new Server(server);
 
 
 io.on("connection", (socket) => {
-    socket.on('chat message', async(msg, senderName, senderID, conversationID) => {
+
+    socket.on('room', function(room) {
+        console.log("Room")
+        console.log(room)
+        socket.join(room);
+        console.log(socket.rooms)
+    })
+
+    socket.on('chat message', async (msg, senderName, senderID, conversationID) => {
         io.emit('chat message', msg, senderName, senderID, conversationID);
         let mes = new MessageModel({
             text: msg,
@@ -29,7 +37,10 @@ io.on("connection", (socket) => {
         console.log(mes)
         await mes.save()
     });
-    socket.on('new post', async(post, userID, username) => {
+    socket.on('typing', (room, name, key) => {
+        socket.in(room).emit("display typing", name, key)
+    })
+    socket.on('new post', async (post, userID, username) => {
         io.emit('new post', post, userID, username);
         let postDB = new PostModel({
             userID: userID,
@@ -38,14 +49,7 @@ io.on("connection", (socket) => {
         console.log(postDB)
         await postDB.save();
     })
-    // dodelat mozna typing...
-    
-    // dodelat pro posts
 });
-
-
-
-const message_controller = require("./controllers/messageController");
 
 //i18n - locales
 const i18n = require('i18n');
@@ -96,15 +100,14 @@ InitiateMongoServer();
 const store = new MongoStore({
     uri: "mongodb+srv://user1234:user1234@cluster0.gr9ky.mongodb.net/PWA?retryWrites=true&w=majority",
     collection: "mySession"
-})
+});
 
 app.use(session({
     secret: 'SECRET KEY',
     resave: false,
     saveUninitialized: false,
     store: store
-}
-))
+}));
 
 //express-flash-message
 app.use((req, res, next) => {

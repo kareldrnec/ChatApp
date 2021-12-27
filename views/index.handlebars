@@ -37,7 +37,7 @@
         <div class="card mx-auto pt-1">
           <div class="card-header bg-light">
 
-            <div class="d-flex flex-row">
+            <div class="d-flex justify-content-start">
               <div class="position-relative avatar">
                 <img src="/images/user.png" class="img-fluid rounded-circle" alt="">
               </div>
@@ -51,16 +51,21 @@
                 {{this.created}}
               </div>
             </div>
-
-
+            {{#ifEquals this.userID this.currentUserID}}
+            <div class="d-flex justify-content-end" style="position: absolute; top: 10px; right: 10px;">
+              <select id="postActionSelect">
+                <option value="default">-{{i18n "action"}}-</option>
+                <option value="edit">{{i18n "edit"}}</option>
+                <option value="delete">{{i18n "delete"}}</option>
+              </select>
+            </div>
+            {{/ifEquals}}
           </div>
           <div class="card-body">
             {{this.postContent}}
           </div>
         </div>
         {{/each}}
-
-
       </div>
     </div>
   </div>
@@ -78,10 +83,14 @@
   var input = document.getElementById('input');
   var cards_content = document.getElementById('cardsContent');
   var sortSelect = document.getElementById('sort');
+  var postActionSelect = document.getElementById("postActionSelect");
   sortSelect.addEventListener('change', function () {
     for (var i = 1; i < cards_content.childNodes.length; i++) {
       cards_content.insertBefore(cards_content.childNodes[i], cards_content.firstChild);
     }
+  })
+  postActionSelect.addEventListener('change', function() {
+    alert(postActionSelect.value)
   })
   form.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -102,6 +111,7 @@
     var br = document.createElement('br');
     var date = new Date();
     var text = document.createTextNode(date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes())
+    
     item.className = "card mx-auto";
     flex_div.className = "d-flex flex-row";
     sub_flex_div.className = "pl-2";
@@ -134,7 +144,7 @@
     }
     var origcolor = card_body.style.backgroundColor;
     card_body.style.backgroundColor = "yellow"
-    setTimeout(function(){
+    setTimeout(function () {
       card_body.style.backgroundColor = origcolor;
     }, 3000)
   });

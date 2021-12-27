@@ -95,6 +95,7 @@ exports.select = async (req, res) => {
         //senderID: (sender._id).toString(),
         senderName: sender.userName,
         currentUser: (req.session.userId).toString(),
+        username: sender.userName + " " + sender.userSurname,
         conversationID: req.params.id,
         messages: messages
     })
