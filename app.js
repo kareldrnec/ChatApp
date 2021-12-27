@@ -148,7 +148,7 @@ app.use((req, res, next) => {
 
 
 //app listen
-server.listen(port, () => {
+server.listen(process.env.PORT || 3000, () => {
     console.log('Example app listening at PORT 3000')
 });
 module.exports = app;
