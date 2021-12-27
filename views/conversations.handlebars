@@ -27,8 +27,9 @@
 
               {{/ifEquals}}
             </h5>
-            <p class="card-text">It's a broader card with text below as a natural lead-in to extra content. This content
-              is a little longer.</p>
+            <p class="card-text">
+              {{#with ..}}{{i18n "created"}}: {{/with}}{{this.createdAt}}
+            </p>
             <div class="text-center">
               <a href="/conversations/{{this.conversationID}}" class="btn btn-primary">
                 {{#with ..}}
@@ -82,7 +83,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">{{i18n "close"}}</button>
-          <input type="submit" value="{{i18n " choose"}}" id="submit" class="btn btn-primary">
+          <input type="submit" value="{{i18n "choose"}}" id="submit" class="btn btn-primary">
         </div>
       </form>
     </div>

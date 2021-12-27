@@ -35,10 +35,12 @@ exports.showAll = async (req, res) => {
                 membersArr.push(members[j]);
             }
         }
+        let date = conversationsDB[i].createdAt;
         conversations.push({
             "conversationID": conversationsDB[i]._id,
             "conversationType": conversationsDB[i].type,
-            "conversationMembers": membersArr
+            "conversationMembers": membersArr,
+            "createdAt": date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes()
         })
         membersArr = [];
     }

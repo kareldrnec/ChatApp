@@ -9,6 +9,7 @@
 	"choose": "Choose",
 	"close": "Close",
 	"conversation": "Conversation",
+	"created": "Created",
 	"default": "Default",
 	"delete": "Delete",
 	"delete account": "Delete Account",
@@ -42,6 +43,5 @@
 	"show user details": "Show Details About User",
 	"sort by": "Sort By",
 	"whats new": "What's new?",
-	"write a message": "Write a Message...",
-	" choose": " choose"
+	"write a message": "Write a Message..."
 }
