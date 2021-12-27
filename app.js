@@ -15,6 +15,12 @@ const PostModel = require('./models/post');
 // socket.io priprava
 const server = http.createServer(app);
 const { Server } = require("socket.io");
+
+//app listen
+server.listen(port, () => {
+    console.log('Example app listening at PORT 3000')
+});
+
 const io = new Server(server);
 
 
@@ -145,10 +151,4 @@ app.use((req, res, next) => {
     });
 });
 
-
-
-//app listen
-server.listen(process.env.PORT || 3000, () => {
-    console.log('Example app listening at PORT 3000')
-});
 module.exports = app;
