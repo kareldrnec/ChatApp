@@ -10,43 +10,29 @@ const cookieParser = require('cookie-parser')
 const session = require('express-session');
 const MongoStore = require('connect-mongodb-session')(session);
 const InitiateMongoServer = require('./config/db');
-// Models...
-const MessageModel = require('./models/message');
-const PostModel = require('./models/post');
+
+// Message/Post Controller
+const message_controller = require('./controllers/messageController');
+const post_controller = require('./controllers/postController');
 
 // socket.io priprava
 const server = http.createServer(app);
 const { Server } = require("socket.io");
-//app listen
+//server listen
 server.listen(port, () => {
     console.log('Example app listening at PORT 3000')
 });
 
-const io = new Server(server);
+var io = new Server(server);
+exports.io = io;
+
 io.on("connection", (socket) => {
     socket.on('room', function(room) {
         socket.join(room)
     });
-    socket.on('chat message', async (msg, senderName, senderID, conversationID) => {
-        io.emit('chat message', msg, senderName, senderID, conversationID);
-        let mes = new MessageModel({
-            text: msg,
-            conversationID: conversationID,
-            senderID: senderID
-        })
-        await mes.save()
-    });
-    socket.on('typing', (room, name, key) => {
-        socket.in(room).emit("display typing", name, key)
-    });
-    socket.on('new post', async (post, userID, username) => {
-        io.emit('new post', post, userID, username);
-        let postDB = new PostModel({
-            userID: userID,
-            postContent: post
-        })
-        await postDB.save();
-    });
+    socket.on('chat message', message_controller.sendMessage);
+    socket.on('typing', message_controller.typing);
+    socket.on('new post', post_controller.addNewPost);
 });
 
 //i18n configure
@@ -123,4 +109,4 @@ app.use((req, res, next) => {
     });
 });
 
-module.exports = app;
+//module.exports = app;

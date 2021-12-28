@@ -1,35 +1,27 @@
 
 const PostModel = require('../models/post');
+var app = require('../app');
 
-exports.addNewPost = async(req, res) => {
-    
-    const postInput = req.body.postInput;
-    
-    try{
-        let post = new PostModel({
-            userID: req.session.userId,
-            postContent: postInput
-        });
-        await post.save();
-    } catch(err){
-        console.log(err.message);
-    }
-    req.session.flash = { type: 'success', text: 'New post was successfully added!'};
-    res.redirect('/');
+exports.addNewPost = async(post, userID, username) => {
+    app.io.emit('new post', post, userID, username);
+    let postDB = new PostModel({
+        userID: userID,
+        postContent: post
+    });
+    await postDB.save();
 };
 
 exports.editSelectedPost = async(req, res) => {
-    console.log("Budu editovat!");
-    console.log(req.params.id);
-    console.log("-------------");
+    let update = {
+        postContent: req.body.editPostInput
+    };
+    await PostModel.findByIdAndUpdate(req.params.id, update);
     req.session.flash = {type: 'success', text: "Selected post was successfully updated"}
     res.redirect('/');
 };
-
 
 exports.deleteSelectedPost = async(req, res) => {
     await PostModel.findByIdAndDelete(req.params.id);
     req.session.flash = { type: 'success', text: req.__("deleted post")};
     res.redirect('/');
 };
-
