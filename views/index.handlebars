@@ -53,15 +53,15 @@
             </div>
             {{#ifEquals this.userID this.currentUserID}}
             <div class="d-flex justify-content-end" style="position: absolute; top: 10px; right: 10px;">
-              <select id="postActionSelect">
+              <select id="{{this._id}}" onchange="setSelect(event)">
                 <option value="default">-{{i18n "action"}}-</option>
-                <option value="edit">{{i18n "edit"}}</option>
-                <option value="delete">{{i18n "delete"}}</option>
+                <option value="edit/{{this._id}}">{{i18n "edit"}}</option>
+                <option value="delete/{{this._id}}">{{i18n "delete"}}</option>
               </select>
             </div>
             {{/ifEquals}}
           </div>
-          <div class="card-body">
+          <div class="card-body" name="{{this._id}}">
             {{this.postContent}}
           </div>
         </div>
@@ -71,6 +71,57 @@
   </div>
 </div>
 
+
+<!-- Modal Delete Post -->
+<div class="modal fade" id="deletePostModal" tabindex="-1" role="dialog" aria-labelledby="deletePostModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deletePostModalLabel">{{i18n "delete post label"}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="deletePostForm" method="post">
+          <div class="text-center">
+            {{i18n "delete post"}}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{i18n "close"}}</button>
+            <button type="submit" class="btn btn-primary">{{i18n "delete"}}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Edit Post -->
+<div class="modal fade" id="editPostModal" tabindex="-1" role="dialog" aria-labelledby="editPostModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editPostModalLabel">{{i18n "edit post label"}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="editPostForm" method="post">
+          <label for="editPostInput">{{i18n "post content"}}</label>
+          <input type="text" id="editPostInput" class="form-control">
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{i18n "close"}}</button>
+            <button type="submit" class="btn btn-primary">{{i18n "edit"}}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <script src="/socket.io/socket.io.js"></script>
@@ -89,9 +140,23 @@
       cards_content.insertBefore(cards_content.childNodes[i], cards_content.firstChild);
     }
   })
-  postActionSelect.addEventListener('change', function() {
-    alert(postActionSelect.value)
-  })
+
+  function setSelect(event) {
+    var select = document.getElementById(event.target.id);
+    if (select.value != "default") {
+      var stringArr = (select.value).split('/')
+      if (stringArr[0] == "delete") {
+        $('#deletePostForm').attr("action", "/posts/" + select.value);
+        $('#deletePostModal').modal('show');
+      } else {
+        $('#editPostForm').attr("action", "/posts/" + select.value);
+        var textValue = document.getElementsByName(stringArr[1])[0].textContent
+        document.getElementById("editPostInput").value = textValue.replace(/[\n\r]+|[\s]{2,}/g, ' ').trim()
+        $('#editPostModal').modal('show');
+      }
+    }
+  };
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     if (input.value) {
@@ -111,7 +176,7 @@
     var br = document.createElement('br');
     var date = new Date();
     var text = document.createTextNode(date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes())
-    
+
     item.className = "card mx-auto";
     flex_div.className = "d-flex flex-row";
     sub_flex_div.className = "pl-2";

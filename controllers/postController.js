@@ -19,11 +19,17 @@ exports.addNewPost = async(req, res) => {
 };
 
 exports.editSelectedPost = async(req, res) => {
-    
+    console.log("Budu editovat!");
+    console.log(req.params.id);
+    console.log("-------------");
+    req.session.flash = {type: 'success', text: "Selected post was successfully updated"}
+    res.redirect('/');
 };
 
 
 exports.deleteSelectedPost = async(req, res) => {
-
+    await PostModel.findByIdAndDelete(req.params.id);
+    req.session.flash = { type: 'success', text: req.__("deleted post")};
+    res.redirect('/');
 };
 

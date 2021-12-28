@@ -46,14 +46,7 @@ io.on("connection", (socket) => {
             postContent: post
         })
         await postDB.save();
-    })
-    //TODO
-    socket.on('delete post', async(post) => {
-
     });
-    socket.on('edit post', async(post) => {
-
-    })
 });
 
 //i18n configure

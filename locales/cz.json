@@ -9,12 +9,17 @@
 	"choose": "Vybrat",
 	"close": "Zavřít",
 	"conversation": "Konverzace",
+	"conversation deleted": "Konverzace byla úspěšně smazána!",
 	"created": "Vytvořeno",
 	"default": "Výchozí",
 	"delete": "Smazat",
 	"delete account": "Smazat účet",
+	"delete post": "Opravdu chcete smazat zvolený příspěvek?",
+	"delete post label": "Smazat zvolený příspěvek",
+	"deleted post": "Zvolený příspvěk byl úspěšně smazán!",
 	"edit": "Editovat",
 	"edit personal info": "Úprava osobních údajů",
+	"edit post label": "Upravit zvolený příspěvek",
 	"email": "Email",
 	"group chat": "Skupinový chat",
 	"home": "Domů",
@@ -34,6 +39,7 @@
 	"open": "Otevřít",
 	"personal info": "Osobní údaje",
 	"posts": "Příspěvky",
+	"post content": "Obsah příspěvku",
 	"red": "Červená",
 	"save": "Uložit",
 	"save changes": "Uložit změny",
@@ -43,6 +49,5 @@
 	"show user details": "Zobrazit informace o uživateli.",
 	"sort by": "Seřadit od",
 	"whats new": "Co je nového?",
-	"write a message": "Napište zprávu...",
-	" choose": " choose"
+	"write a message": "Napište zprávu..."
 }

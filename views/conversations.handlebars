@@ -106,6 +106,10 @@
 </div>
 
 <script>
+  setTimeout(function () {
+    $('#flash').remove();
+  }, 3000);
+
   document.getElementById("userSelect").addEventListener('change', (event) => {
     var selectedIndex = event.target.selectedIndex;
     document.getElementById("username").value = event.srcElement[selectedIndex].label;

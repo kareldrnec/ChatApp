@@ -22,17 +22,18 @@ exports.showAll = async (req, res) => {
     }));
 
     let conversationsDB = await ConversationModel.find({
-        members: {
-            $elemMatch: {
-                "userID": (req.session.userId).toString()
-            }
-        }
+        members: (req.session.userId).toString()
     });
+
     for (var i = 0; i < conversationsDB.length; i++) {
         var members = conversationsDB[i].members;
         for (var j = 0; j < members.length; j++) {
-            if (members[j].userID != (req.session.userId).toString()) {
-                membersArr.push(members[j]);
+            if (members[j] != (req.session.userId).toString()) {
+                let user = await UserModel.findById(members[j]);
+                membersArr.push({
+                    "userID": members[j],
+                    "username": user.userName + " " + user.userSurname
+                });
             }
         }
         let date = conversationsDB[i].createdAt;
@@ -56,20 +57,23 @@ exports.showAll = async (req, res) => {
 exports.create = async (req, res) => {
     // dodelat
     let user = await UserModel.findById(req.session.userId);
-    var membersArr = [];
-    membersArr.push({
-        "userID": (user._id).toString(),
-        "username": user.userName + " " + user.userSurname
-    });
-    membersArr.push({
-        "userID": req.body.userSelect,
-        "username": req.body.username
-    });
-    let conversation = new ConversationModel({
-        type: "normal",
-        members: membersArr
+
+    let conversationDB = await ConversationModel.findOne({
+        members: { $all: [(req.session.userId).toString(), req.body.userSelect] }
     })
-    await conversation.save();
+
+    if (!conversationDB) {
+        var membersArr = [];
+        membersArr.push((user._id).toString());
+        membersArr.push(req.body.userSelect);
+        let conversation = new ConversationModel({
+            type: "normal",
+            members: membersArr
+        })
+        await conversation.save();
+    } else { 
+        return res.redirect("/conversations/" + conversationDB._id)
+    }
     return res.redirect('/conversations');
 };
 
@@ -78,8 +82,8 @@ exports.select = async (req, res) => {
     let sender = await UserModel.findById(req.session.userId)
     let messagesDB = await MessageModel.find({
         conversationID: req.params.id
-    })  
-    
+    })
+
     for (var i = 0; i < messagesDB.length; i++) {
         let messageSender = await UserModel.findById(messagesDB[i].senderID);
         let date = messagesDB[i].createdAt;
@@ -115,9 +119,8 @@ exports.delete = async (req, res) => {
     })
     // mazu konverzaci
     await ConversationModel.findByIdAndDelete(req.params.id)
-    
-  //  console.log(messages)
-    req.session.flash = { type: 'success', text: 'Conversation was successfully deleted!'}
+
+    req.session.flash = { type: 'success', text: req.__('conversation deleted') }
     return res.redirect("/conversations")
 
 };

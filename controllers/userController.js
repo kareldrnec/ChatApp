@@ -1,7 +1,6 @@
 //user controller
 
 const UserModel = require('../models/user');
-const PostModel = require('../models/post');
 const bcrypt = require('bcryptjs');
 
 exports.registerNewUser = async (req, res) => {
@@ -41,9 +40,6 @@ exports.registerNewUser = async (req, res) => {
 exports.loginUser = async (req, res) => {
     
     const { email, password } = req.body;
-
-    console.log(email)
-    console.log(password)
 
     const user = await UserModel.findOne({ email });
 
@@ -93,7 +89,6 @@ exports.myProfile = async (req, res) => {
 exports.editPersonalInfo = async (req, res) => {
 
     // dodelat try/catch
-    console.log("Edit form")
     let query = {"_id": req.session.userId};
     const personalInfoText = req.body.personalInfoText;
     let update = {
@@ -107,9 +102,7 @@ exports.editPersonalInfo = async (req, res) => {
 
 exports.deleteAccount = async (req, res) => {
     //dodelat
-    console.log("Cau");
     let user = await UserModel.findById(req.session.userId);
-    console.log(user)
     res.redirect("/");
 };
 
@@ -117,7 +110,6 @@ exports.showUser = async (req, res) => {
     let user = await UserModel.findById(req.params.id);
     let date = user.createdAt;
     let stringDate = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
-    console.log(user)
     return res.render("user", {
         username: user.userName,
         surname: user.userSurname,
