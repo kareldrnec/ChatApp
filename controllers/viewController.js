@@ -2,10 +2,11 @@
 const UserModel = require('../models/user');
 const PostModel = require('../models/post');
 
-exports.getIndexPage = async (req, res) => {
+exports.getIndexPage = async (req, res, next) => {
     let posts = [];
     try {
         let currentUser = await UserModel.findById(req.session.userId);
+
         let postsDB = await PostModel.find();
         for (var i = postsDB.length - 1; i >= 0; i--) {
             var user = await UserModel.findById(postsDB[i].userID);
@@ -31,7 +32,7 @@ exports.getIndexPage = async (req, res) => {
     }
 };
 
-exports.getSettings = async (req, res) => {
+exports.getSettings = async (req, res, next) => {
     try {
         let currentUser = await UserModel.findById(req.session.userId);
         return res.render('settings', {
