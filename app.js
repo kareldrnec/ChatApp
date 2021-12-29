@@ -24,7 +24,7 @@ server.listen(port, () => {
 });
 
 var io = new Server(server);
-//exports.io = io;
+exports.io = io;
 
 io.on("connection", (socket) => {
     socket.on('room', function(room) {
@@ -116,3 +116,5 @@ app.use((req, res, next) => {
         text: req.__("404 response")
     })
 });
+
+module.exports = app;
