@@ -24,7 +24,7 @@ server.listen(port, () => {
 });
 
 var io = new Server(server);
-exports.io = io;
+//exports.io = io;
 
 io.on("connection", (socket) => {
     socket.on('room', function(room) {
