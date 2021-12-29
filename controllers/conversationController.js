@@ -42,7 +42,6 @@ exports.showAll = async (req, res, next) => {
             })
             membersArr = [];
         }
-        console.log(conversations)
         return res.render("conversations", {
             title: req.__("chats"),
             users: users,
@@ -73,32 +72,37 @@ exports.create = async (req, res, next) => {
         }
         return res.redirect("/conversations/" + conversation._id);
     } catch (err) {
-        console.log(err)
         return next(err);
     }
 };
 
-// TODO Group Chat
+// CREATE a new group conversation or redirect to existing one
 exports.createGroup = async (req, res, next) => {
     try {
-        console.log("Vytvarim group chat")
         var selection = req.body.groupSelect
-        var user = await UserModel.findById(req.session.userId);
-        var membersArr = [];
-        membersArr.push((user._id).toString());
-        membersArr = membersArr.concat(selection);
-        console.log(selection)
-        console.log("membersArr")
-        console.log(membersArr)
-        console.log("end")
-        var conversation = new ConversationModel({
-            type: "group",
-            members: membersArr
-        });
-        console.log("Konverzace")
-        console.log(conversation)
-        await conversation.save();
-        res.redirect('/conversations')
+        if (selection && Array.isArray(selection)) {
+            var user = await UserModel.findById(req.session.userId);
+            var membersArr = [];
+            membersArr.push((user._id).toString());
+            membersArr = membersArr.concat(selection);
+            var conversation = await ConversationModel.findOne({
+                members: { $all: membersArr }
+            });
+            if(!conversation) {
+                var conversation = new ConversationModel({
+                    type: "group",
+                    members: membersArr
+                });
+                await conversation.save();
+                req.session.flash = { type: "success", text: req.__("group chat created") };
+            } else {
+                req.session.flash = { type: "warning", text: req.__("group chat exists") };
+            }
+            return res.redirect('/conversations/' + conversation._id);
+        } else {
+            req.session.flash = { type: 'danger', text: req.__("group chat error") }; 
+        }
+        return res.redirect('/conversations')
     } catch (err) {
         return next(err);
     }

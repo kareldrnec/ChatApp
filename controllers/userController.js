@@ -5,7 +5,7 @@ const MessageModel = require('../models/message');
 const ConversationModel = require('../models/conversation');
 const bcrypt = require('bcryptjs');
 
-exports.registerNewUser = async (req, res) => {
+exports.registerNewUser = async (req, res, next) => {
     //generating salt
     const salt = await bcrypt.genSalt(10);
 
@@ -38,37 +38,36 @@ exports.registerNewUser = async (req, res) => {
         req.session.flash = { type: 'success', text: 'Your account was successfully created!' }
         res.redirect("/users/login");
     } catch (err) {
-        console.log(err.message);
+        return next(err);
     }
 
 };
 
-exports.loginUser = async (req, res) => {
-
+exports.loginUser = async (req, res, next) => {
     const { email, password } = req.body;
-
-    const user = await UserModel.findOne({ email });
-
-    if (!user) {
-        return res.status(400).render("error", {
-            title: "Error",
-            code: "",
-            text: "User was not found!"
-        });
+    try {
+        const user = await UserModel.findOne({ email });
+        if (!user) {
+            return res.status(400).render("error", {
+                title: "Error",
+                code: "",
+                text: "User was not found!"
+            });
+        }
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).render("error", {
+                title: "Error",
+                code: "",
+                text: "Wrong password!"
+            });
+        }
+        req.session.userId = user._id;
+        req.session.flash = { type: 'success', text: req.__('logged in') + user.userName + '! :)' }
+        return res.redirect("/");
+    } catch (err) {
+        return next(err);
     }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-        return res.status(400).render("error", {
-            title: "Error",
-            code: "",
-            text: "Wrong password!"
-        });
-    }
-    req.session.userId = user._id;
-    req.session.flash = { type: 'success', text: req.__('logged in') + user.userName + '! :)' }
-    return res.redirect("/");
 };
 
 // Logout - session destroy
@@ -124,6 +123,7 @@ exports.showUser = async (req, res, next) => {
         return res.render("user", {
             username: user.userName,
             surname: user.userSurname,
+            info: user.personalInfo,
             email: user.email,
             created: stringDate
         });

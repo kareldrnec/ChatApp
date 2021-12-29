@@ -2,13 +2,18 @@
 
 <div class="d-flex justify-content-center mt-5">
     <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="/images/user.png" width="60" height="90" alt="Card image cap">
         <div class="card-body">
             <div class="text-center">
                 <h5 class="card-title">{{ username }} {{ surname }}</h5>
             </div>
             <small>{{i18n "personal info"}}</small>
-            <textarea readonly>Some quick example text to build on</textarea>
+            <p class="card-text">
+                {{#if info}}
+                {{ info }}
+                {{else}}
+                No personal info :(
+                {{/if}}
+            </p>     
             <hr class="solid">
             <small>{{i18n "email"}}</small><br>
             {{ email }}

@@ -1,7 +1,11 @@
 {{> navbar_index}}
 
-
-
+{{#if flash}}
+<div style="text-align: center" id="flash" class="alert alert-{{flash.type}}" role="alert">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <strong>{{flash.text}}</strong>
+</div>
+{{/if}}
 
 <div class="container mt-4">
   <div class="card mx-auto" style="max-width: 800px;">
@@ -55,6 +59,10 @@
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
+  setTimeout(function () {
+    $('#flash').remove();
+  }, 3000);
+  
   var socket = io();
   var form = document.getElementById('form');
   var input = document.getElementById('input');

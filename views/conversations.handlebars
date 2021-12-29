@@ -113,7 +113,7 @@
       </div>
       <form method="post" action="/conversations/createGroupChat">
         <div class="modal-body">
-          <label for="groupSelect">Add To Group Chat</label>
+          <label for="groupSelect">{{i18n "add to group chat"}}</label>
           <select id="groupSelect" name="groupSelect" class="form-control" multiple>
             {{#each users}}
             <option value="{{this.userID}}">{{this.username}} {{this.surname}}</option>
@@ -121,7 +121,7 @@
           </select> 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-senondary" data-dismiss="modal">{{i18n "close"}}</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">{{i18n "close"}}</button>
           <input type="submit" class="btn btn-primary" value="{{i18n "create"}}">
         </div>
       </form>
