@@ -13,6 +13,9 @@ router.get("/delete/:id", auth.requiresLogin, conversation_controller.delete);
 // route - create chat
 router.post("/createChat", auth.requiresLogin, conversation_controller.create);
 
+// router - create group chat
+router.post("/createGroupChat", auth.requiresLogin, conversation_controller.createGroup);
+
 // route - get chat
 router.get("/:id", auth.requiresLogin, conversation_controller.select);
 

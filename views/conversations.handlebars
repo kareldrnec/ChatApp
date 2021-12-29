@@ -21,10 +21,20 @@
           <div class="card-body">
             <h5 class="card-title">
               {{#ifEquals this.conversationType "normal"}}
-              {{this.conversationMembers.0.username}}
+                {{this.conversationMembers.0.username}}
+                <br>
+                {{#with ..}}
+                  {{i18n "conversation type"}}: {{i18n "normal chat"}}
+                {{/with}}
               {{/ifEquals}}
               {{#ifEquals this.conversationType "group"}}
-
+                {{#each this.conversationMembers}}
+                  {{this.username}}
+                {{/each}}
+                <br>
+                {{#with ..}}
+                  {{i18n "conversation type"}}: {{i18n "group chat"}}
+                {{/with}}
               {{/ifEquals}}
             </h5>
             <p class="card-text">
@@ -33,12 +43,12 @@
             <div class="text-center">
               <a href="/conversations/{{this.conversationID}}" class="btn btn-primary">
                 {{#with ..}}
-                {{i18n "choose"}}
+                  {{i18n "choose"}}
                 {{/with}}
               </a>
               <a href="/conversations/delete/{{this.conversationID}}" class="btn btn-primary">
                 {{#with ..}}
-                {{i18n "delete"}}
+                  {{i18n "delete"}}
                 {{/with}}
               </a>
             </div>
@@ -96,11 +106,25 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="newChatModalLabel">{{i18n "new chat"}}</h5>
+        <h5 class="modal-title" id="newChatModalLabel">{{i18n "group chat"}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      <form method="post" action="/conversations/createGroupChat">
+        <div class="modal-body">
+          <label for="groupSelect">Add To Group Chat</label>
+          <select id="groupSelect" name="groupSelect" class="form-control" multiple>
+            {{#each users}}
+            <option value="{{this.userID}}">{{this.username}} {{this.surname}}</option>
+            {{/each}}
+          </select> 
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-senondary" data-dismiss="modal">{{i18n "close"}}</button>
+          <input type="submit" class="btn btn-primary" value="{{i18n "create"}}">
+        </div>
+      </form>
     </div>
   </div>
 </div>

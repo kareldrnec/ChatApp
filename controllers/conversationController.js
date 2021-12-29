@@ -21,7 +21,6 @@ exports.showAll = async (req, res, next) => {
         let conversationsDB = await ConversationModel.find({
             members: (req.session.userId).toString()
         });
-        console.log(conversationsDB)
         for (var i = 0; i < conversationsDB.length; i++) {
             var members = conversationsDB[i].members;
             for (var j = 0; j < members.length; j++) {
@@ -34,7 +33,7 @@ exports.showAll = async (req, res, next) => {
                 }
             }
             let date = conversationsDB[i].createdAt;
-            console.log(date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes())
+            //console.log(date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes())
             conversations.push({
                 "conversationID": conversationsDB[i]._id,
                 "conversationType": conversationsDB[i].type,
@@ -43,6 +42,7 @@ exports.showAll = async (req, res, next) => {
             })
             membersArr = [];
         }
+        console.log(conversations)
         return res.render("conversations", {
             title: req.__("chats"),
             users: users,
@@ -81,7 +81,24 @@ exports.create = async (req, res, next) => {
 // TODO Group Chat
 exports.createGroup = async (req, res, next) => {
     try {
-
+        console.log("Vytvarim group chat")
+        var selection = req.body.groupSelect
+        var user = await UserModel.findById(req.session.userId);
+        var membersArr = [];
+        membersArr.push((user._id).toString());
+        membersArr = membersArr.concat(selection);
+        console.log(selection)
+        console.log("membersArr")
+        console.log(membersArr)
+        console.log("end")
+        var conversation = new ConversationModel({
+            type: "group",
+            members: membersArr
+        });
+        console.log("Konverzace")
+        console.log(conversation)
+        await conversation.save();
+        res.redirect('/conversations')
     } catch (err) {
         return next(err);
     }
