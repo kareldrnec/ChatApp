@@ -4,9 +4,8 @@ const PostModel = require('../models/post');
 
 exports.getIndexPage = async (req, res, next) => {
     let posts = [];
-    try {
         let currentUser = await UserModel.findById(req.session.userId);
-
+        console.log(currentUser)
         let postsDB = await PostModel.find();
         for (var i = postsDB.length - 1; i >= 0; i--) {
             var user = await UserModel.findById(postsDB[i].userID);
@@ -27,9 +26,7 @@ exports.getIndexPage = async (req, res, next) => {
             username: currentUser.userName + " " + currentUser.userSurname,
             posts: posts
         });
-    } catch (err) {
-        return next(err);
-    }
+    
 };
 
 exports.getSettings = async (req, res, next) => {
