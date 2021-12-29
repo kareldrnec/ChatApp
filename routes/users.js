@@ -1,13 +1,12 @@
-// routing of users
-
+// ROUTER for users
 var express = require("express");
 var router = express.Router();
 var auth = require('../auth');
 var user_controller = require('../controllers/userController');
 
-router.get("/", auth.requiresLogin, (req, res) => {
-    res.render("user");
-});
+router.get("/", (req, res) => {
+    res.redirect("/");
+})
 
 // GET - router Login
 router.get("/login", (req, res) => {

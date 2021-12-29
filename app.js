@@ -96,17 +96,23 @@ app.use(express.json());
 //routing
 app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
-// idk jestli nesmazat posts .. uvidime
 app.use('/posts', require('./routes/posts'));
 app.use('/conversations', require('./routes/conversations'));
 
 //error page handlers
 //dodelat
-app.use((req, res, next) => {
-    res.status(400).render('error', {
-        title: "Error",
-        variable: "405"
+app.use((err, req, res, next) => {
+    return res.status(500).render('error', {
+        title: req.__("error"),
+        code: "500",
+        text: req.__("500 response")
     });
 });
 
-//module.exports = app;
+app.use((req, res, next) => {
+    return res.status(404).render('error', {
+        title: req.__("error"),
+        code: "404",
+        text: req.__("404 response")
+    })
+});

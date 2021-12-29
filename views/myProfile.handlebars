@@ -39,7 +39,7 @@
     </div>
 </div>
 
-<!-- Modal 1/Edit personal info-->
+<!-- Edit Personal Info Modal -->
 <div>
     <div class="modal fade" id="personalInfoModal" tabindex="-1" role="dialog" aria-labelledby="personalInfoModal"
         aria-hidden="true">
@@ -53,13 +53,8 @@
                 </div>
                 <div class="modal-body">
                     <form action="/users/myProfile" method="post">
-                        <small>{{i18n "personal info"}}:</small>
-                        <textarea style="width: 100%; resize: none;" rows="5" id="personalInfoText"
-                            name="personalInfoText">
-                        {{#if info}}
-                        {{ info }}
-                        {{/if}}
-                        </textarea>
+                        <label for="personalInfoText">{{i18n "personal info"}}</label>
+                        <input type="text" id="personalInfoText" name="personalInfoText" class="form-control" value="{{info}}">
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">{{i18n "close"}}</button>
                             <button type="submit" class="btn btn-primary">{{i18n "save changes"}}</button>
@@ -72,14 +67,14 @@
 </div>
 
 
-<!-- Dodelat odstraneni uzivatele-->
+<!-- Delete Account Modal -->
 <div>
     <div class="modal fade" id="deleteAccountModal" tabindex="-1" role="dialog"
         aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteAccountModalLabel">Edit Picture</h5>
+                    <h5 class="modal-title" id="deleteAccountModalLabel">{{i18n "delete account"}}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -87,11 +82,11 @@
                 <div class="modal-body">
                     <form action="/users/deleteAccount">
                         <div class="text-center">
-                            Do you want to delete your account?
+                            {{i18n "delete account question"}}
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Delete</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{i18n "close"}}</button>
+                            <button type="submit" class="btn btn-primary">{{i18n "delete"}}</button>
                         </div>
                     </form>
                 </div>
@@ -99,3 +94,9 @@
         </div>
     </div>
 </div>
+
+<script> 
+    setTimeout(function () {
+        $('#flash').remove();
+    }, 3000);
+</script>

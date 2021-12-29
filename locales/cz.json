@@ -1,4 +1,6 @@
 {
+	"404 response": "Požadovaná stránka nebyla nalezena.",
+	"500 response": "V aplikaci došlo k chybě.",
 	"about app": "O aplikaci",
 	"action": "Akce",
 	"add post": "Přidat příspěvek",
@@ -14,6 +16,7 @@
 	"default": "Výchozí",
 	"delete": "Smazat",
 	"delete account": "Smazat účet",
+	"delete account question": "Opravdu chcete smazat svůj účet?",
 	"delete post": "Opravdu chcete smazat zvolený příspěvek?",
 	"delete post label": "Smazat zvolený příspěvek",
 	"deleted post": "Zvolený příspvěk byl úspěšně smazán!",
@@ -21,6 +24,7 @@
 	"edit personal info": "Úprava osobních údajů",
 	"edit post label": "Upravit zvolený příspěvek",
 	"email": "Email",
+	"error": "Chyba",
 	"group chat": "Skupinový chat",
 	"home": "Domů",
 	"information": "Informace",
@@ -38,6 +42,7 @@
 	"on chatapp since": "Na ChatApp od",
 	"open": "Otevřít",
 	"personal info": "Osobní údaje",
+	"personal info updated": "Vaše osobní údaje byly úspěšně aktualizovány!",
 	"posts": "Příspěvky",
 	"post content": "Obsah příspěvku",
 	"red": "Červená",
@@ -49,5 +54,6 @@
 	"show user details": "Zobrazit informace o uživateli.",
 	"sort by": "Seřadit od",
 	"whats new": "Co je nového?",
-	"write a message": "Napište zprávu..."
+	"write a message": "Napište zprávu...",
+	"text": "text"
 }

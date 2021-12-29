@@ -69,29 +69,32 @@
   });
 
   input.addEventListener('keydown', function (e) {
-    socket.emit("typing", "{{conversationID}}", "{{senderName}}", 1);
+    socket.emit("typing", "{{conversationID}}", "{{currentUser}}", "{{senderName}}", 1);
   });
 
   input.addEventListener('keyup', function (e) {
-    socket.emit("typing", "{{conversationID}}", "{{senderName}}", 0);
+    socket.emit("typing", "{{conversationID}}", "{{currentUser}}", "{{senderName}}", 0);
   });
 
   socket.on('connect', function () {
     socket.emit('room', "{{conversationID}}")
   });
 
-  socket.on('display typing', function (name, key) {
+  socket.on('display typing', function (senderId, name, key) {
     var typingEcho = document.getElementById("typingEcho");
-    if(key == 1) {
-      typingEcho.textContent = name + " " + "{{i18n "is writing"}}";
-    } else {
-      setTimeout(function(){
-        typingEcho.textContent = "";
-      }, 3000);
+    if ("{{currentUser}}" != senderId) {
+      if (key == 1) {
+        typingEcho.textContent = name + " " + "{{i18n "is writing"}}";
+      } else {
+        setTimeout(function () {
+          typingEcho.textContent = "";
+        }, 3000);
+      }
     }
   });
 
-  socket.on('chat message', function (msg, senderName, senderID) {
+  socket.on('chat message', function (msg, senderName, senderID, stringDate) {
+    console.log(stringDate)
     var item = document.createElement('div');
     var avatar = document.createElement('div');
     var img = document.createElement('img');

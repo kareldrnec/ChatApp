@@ -1,6 +1,8 @@
 //user controller
-
 const UserModel = require('../models/user');
+const PostModel = require('../models/post');
+const MessageModel = require('../models/message');
+const ConversationModel = require('../models/conversation');
 const bcrypt = require('bcryptjs');
 
 exports.registerNewUser = async (req, res) => {
@@ -10,15 +12,19 @@ exports.registerNewUser = async (req, res) => {
     const { userName, userSurname, email, password, confirmPassword } = req.body;
 
     try {
-        if(password !== confirmPassword) {
-            return res.status(400).json({
-                msg: "Passwords are not equal"
+        if (password !== confirmPassword) {
+            return res.status(400).render("error", {
+                title: "Error",
+                code: "",
+                text: "Passwords are not equal!"
             });
         }
         let user = await UserModel.findOne({ email });
         if (user) {
-            return res.status(400).json({
-                msg: "User Already Exists"
+            return res.status(400).render("error", {
+                title: "Error",
+                code: "",
+                text: "User already exists!"
             });
         }
         const hashedPsw = await bcrypt.hash(password, salt);
@@ -29,7 +35,7 @@ exports.registerNewUser = async (req, res) => {
             password: hashedPsw
         })
         await user.save();
-        req.session.flash = { type: 'success', text: 'Your account was successfully created!'}
+        req.session.flash = { type: 'success', text: 'Your account was successfully created!' }
         res.redirect("/users/login");
     } catch (err) {
         console.log(err.message);
@@ -38,33 +44,38 @@ exports.registerNewUser = async (req, res) => {
 };
 
 exports.loginUser = async (req, res) => {
-    
+
     const { email, password } = req.body;
 
     const user = await UserModel.findOne({ email });
 
-    if(!user){
-        return res.status(400).json({
-            msg: "Uzivatel nenalezen"
+    if (!user) {
+        return res.status(400).render("error", {
+            title: "Error",
+            code: "",
+            text: "User was not found!"
         });
     }
-    
+
     const isMatch = await bcrypt.compare(password, user.password);
 
-    if(!isMatch){
-        return res.status(400).json({
-            msg: "Spatne heslo"
+    if (!isMatch) {
+        return res.status(400).render("error", {
+            title: "Error",
+            code: "",
+            text: "Wrong password!"
         });
     }
     req.session.userId = user._id;
-    req.session.flash = { type: 'success', text: req.__('logged in') + user.userName + '! :)'}
+    req.session.flash = { type: 'success', text: req.__('logged in') + user.userName + '! :)' }
     return res.redirect("/");
 };
 
+// Logout - session destroy
 exports.logout = function (req, res, next) {
-    if(req.session){
-        req.session.destroy(function(err){
-            if(err) {
+    if (req.session) {
+        req.session.destroy(function (err) {
+            if (err) {
                 return next(err);
             } else {
                 return res.redirect('/');
@@ -73,47 +84,75 @@ exports.logout = function (req, res, next) {
     }
 };
 
-exports.myProfile = async (req, res) => {
-    let user = await UserModel.findById(req.session.userId);
-    let date = user.createdAt;
-    let stringDate = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
-    res.render('myProfile', {
-        title: req.__('my profile'),
-        username: user.userName + " " + user.userSurname,
-        email: user.email,
-        info: user.personalInfo,
-        created: stringDate
-    });
+exports.myProfile = async (req, res, next) => {
+    try {
+        let user = await UserModel.findById(req.session.userId);
+        let date = user.createdAt;
+        let stringDate = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+        return res.render('myProfile', {
+            title: req.__('my profile'),
+            username: user.userName + " " + user.userSurname,
+            email: user.email,
+            info: user.personalInfo,
+            created: stringDate
+        });
+    } catch (err) {
+        return next(err);
+    }
 };
 
-exports.editPersonalInfo = async (req, res) => {
-
-    // dodelat try/catch
-    let query = {"_id": req.session.userId};
-    const personalInfoText = req.body.personalInfoText;
+exports.editPersonalInfo = async (req, res, next) => {
+    let query = { "_id": req.session.userId };
+    let personalInfoText = req.body.personalInfoText;
     let update = {
         personalInfo: personalInfoText
     };
-    await UserModel.updateOne(query, update);
-    req.session.flash = { type: "success", text: "Your personal info was successfully updated!"};
-    res.redirect('/users/myProfile');
+    try {
+        await UserModel.updateOne(query, update);
+        req.session.flash = { type: "success", text: req.__('personal info updated') };
+        return res.redirect('/users/myProfile');
+    } catch (err) {
+        return next(err);
+    }
 };
 
-
-exports.deleteAccount = async (req, res) => {
-    //dodelat
-    let user = await UserModel.findById(req.session.userId);
-    res.redirect("/");
-};
-
-exports.showUser = async (req, res) => {
-    let user = await UserModel.findById(req.params.id);
-    let date = user.createdAt;
-    let stringDate = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
-    return res.render("user", {
-        username: user.userName,
-        surname: user.userSurname,
-        email: user.email,
-        created: stringDate
-    });
+exports.showUser = async (req, res, next) => {
+    try {
+        let user = await UserModel.findById(req.params.id);
+        let date = user.createdAt;
+        let stringDate = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+        return res.render("user", {
+            username: user.userName,
+            surname: user.userSurname,
+            email: user.email,
+            created: stringDate
+        });
+    } catch (err) {
+        return next(err);
+    }
 }
+
+exports.deleteAccount = async (req, res, next) => {
+    //dodelat
+    try {
+        await PostModel.deleteMany({
+            userID: req.session.userId
+        })
+        var conversations = await ConversationModel.find({
+            members: { $in: (req.session.userId).toString() }
+        });
+        for (var i = 0; i < conversations.length; i++) {
+            await MessageModel.deleteMany({
+                conversationID: conversations[i]._id
+            })
+        }
+        await ConversationModel.deleteMany({
+            members: { $in: (req.session.userId).toString() }
+        })
+        await UserModel.findByIdAndRemove(req.session.userId);
+    } catch (err) {
+        return next(err);
+    }
+    req.session.destroy();
+    res.redirect("/users/myProfile");
+};
