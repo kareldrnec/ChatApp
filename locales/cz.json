@@ -52,6 +52,7 @@
 	"personal info updated": "Vaše osobní údaje byly úspěšně aktualizovány!",
 	"posts": "Příspěvky",
 	"post content": "Obsah příspěvku",
+	"post updated": "Vybraný příspěvěk byl úspěšně aktualizován!",
 	"red": "Červená",
 	"save": "Uložit",
 	"save changes": "Uložit změny",
@@ -61,6 +62,5 @@
 	"show user details": "Zobrazit informace o uživateli.",
 	"sort by": "Seřadit od",
 	"whats new": "Co je nového?",
-	"write a message": "Napište zprávu...",
-	"text": "text"
+	"write a message": "Napište zprávu..."
 }

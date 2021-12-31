@@ -213,4 +213,11 @@
       card_body.style.backgroundColor = origcolor;
     }, 3000)
   });
+
+  socket.on('error occurred', function(userID) {
+    if("{{userID}}" == userID) {
+      // TO DO vylepsit zobrazeni zpravy o mozne chybe
+      alert("CHYBA")
+    }
+  })
 </script>
