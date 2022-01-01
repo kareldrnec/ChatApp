@@ -1,5 +1,12 @@
 {{> navbar_index }}
 
+{{#if flash}}
+<div style="text-align: center" id="flash" class="alert alert-{{flash.type}}" role="alert">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <strong>{{flash.text}}</strong>
+</div>
+{{/if}}
+
 <div class="container-fluid bg pt-5">
     <div class="row">
         <div class="col-md-4 col-sm-4 col-xs-12"></div>
@@ -16,7 +23,7 @@
                 </div>
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary">{{i18n "save"}}</button>
-                    <button type="button" class="btn btn-primary">{{i18n "back"}}</button>
+                    <button type="button" class="btn btn-primary" onclick="history.back()">{{i18n "back"}}</button>
                 </div>
             </form>
             <!--form end-->
@@ -26,6 +33,9 @@
 </div>
 
 <script>
+    setTimeout(function () {
+        $('#flash').remove();
+    }, 3000);
     let element = document.getElementById("languages");
     if("{{language_value}}") {
         element.value = "{{language_value}}";

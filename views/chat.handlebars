@@ -88,9 +88,9 @@
     socket.emit('room', "{{conversationID}}")
   });
 
-  socket.on('display typing', function (senderId, name, key) {
+  socket.on('display typing', function (senderID, name, key) {
     var typingEcho = document.getElementById("typingEcho");
-    if ("{{currentUser}}" != senderId) {
+    if ("{{currentUser}}" != senderID) {
       if (key == 1) {
         typingEcho.textContent = name + " " + "{{i18n "is writing"}}";
       } else {
@@ -128,5 +128,11 @@
     item.appendChild(subitem);
     cardsContent.appendChild(item);
     cardsContent.scrollTop = cardsContent.scrollHeight;
+  });
+
+  socket.on('error occurred', function(senderID) {
+    if("{{currentUser}}" == senderID) {
+      alert("{{i18n "message error"}}")
+    }
   });
 </script>

@@ -2,10 +2,9 @@
 const PostModel = require('../models/post');
 var app = require('../app');
 
+// ADD new post
 exports.addNewPost = async (post, userID, username) => {
     try {
-        // TODO dodelat zobrazeni o mozne chybe + dodelat take do messages
-        //throw new Error()
         let postDB = new PostModel({
             userID: userID,
             postContent: post
@@ -13,11 +12,11 @@ exports.addNewPost = async (post, userID, username) => {
         await postDB.save();
         app.io.emit('new post', post, userID, username);
     } catch (err) {
-        // error has occurred
         app.io.emit('error occurred', userID);
     }
 };
 
+// EDIT selected post
 exports.editSelectedPost = async (req, res, next) => {
     let update = {
         postContent: req.body.editPostInput
@@ -31,6 +30,7 @@ exports.editSelectedPost = async (req, res, next) => {
     }
 };
 
+// DELETE selected post
 exports.deleteSelectedPost = async (req, res, next) => {
     try {
         await PostModel.findByIdAndDelete(req.params.id);

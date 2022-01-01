@@ -6,11 +6,8 @@ const ConversationModel = require('../models/conversation');
 const bcrypt = require('bcryptjs');
 
 exports.registerNewUser = async (req, res, next) => {
-    //generating salt
     const salt = await bcrypt.genSalt(10);
-
     const { userName, userSurname, email, password, confirmPassword } = req.body;
-
     try {
         if (password !== confirmPassword) {
             return res.status(400).render("error", {
@@ -40,7 +37,6 @@ exports.registerNewUser = async (req, res, next) => {
     } catch (err) {
         return next(err);
     }
-
 };
 
 exports.loginUser = async (req, res, next) => {
@@ -70,7 +66,8 @@ exports.loginUser = async (req, res, next) => {
     }
 };
 
-// Logout - session destroy
+// Logout - 
+// session destroy
 exports.logout = function (req, res, next) {
     if (req.session) {
         req.session.destroy(function (err) {
@@ -83,6 +80,7 @@ exports.logout = function (req, res, next) {
     }
 };
 
+// SHOW my profile
 exports.myProfile = async (req, res, next) => {
     try {
         let user = await UserModel.findById(req.session.userId);
@@ -100,6 +98,7 @@ exports.myProfile = async (req, res, next) => {
     }
 };
 
+// EDIT personal info
 exports.editPersonalInfo = async (req, res, next) => {
     let query = { "_id": req.session.userId };
     let personalInfoText = req.body.personalInfoText;
@@ -115,6 +114,7 @@ exports.editPersonalInfo = async (req, res, next) => {
     }
 };
 
+// SHOW user
 exports.showUser = async (req, res, next) => {
     try {
         let user = await UserModel.findById(req.params.id);
@@ -132,8 +132,8 @@ exports.showUser = async (req, res, next) => {
     }
 }
 
+// DELETE account
 exports.deleteAccount = async (req, res, next) => {
-    //dodelat
     try {
         await PostModel.deleteMany({
             userID: req.session.userId
@@ -150,9 +150,12 @@ exports.deleteAccount = async (req, res, next) => {
             members: { $in: (req.session.userId).toString() }
         })
         await UserModel.findByIdAndRemove(req.session.userId);
+        req.session.destroy();
+        res.cookie('locale', "", {
+            expires: new Date()
+        })
+        res.redirect("/");
     } catch (err) {
         return next(err);
     }
-    req.session.destroy();
-    res.redirect("/users/myProfile");
 };

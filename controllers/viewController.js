@@ -1,4 +1,4 @@
-
+// view controller
 const UserModel = require('../models/user');
 const PostModel = require('../models/post');
 
@@ -45,7 +45,11 @@ exports.getSettings = async (req, res, next) => {
 }
 
 exports.applySettings = function (req, res) {
-    //Dodelat, mozna zmena barvy
-    res.cookie("locale", req.body.languages);
-    res.redirect("/settings");
+    try {
+        res.cookie("locale", req.body.languages);
+        req.session.flash = { type: 'success', text: req.__("language changed")};
+        res.redirect("/settings");
+    } catch (err) {
+        return next(err);
+    }
 }
