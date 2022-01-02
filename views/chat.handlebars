@@ -67,7 +67,9 @@
   var form = document.getElementById('form');
   var input = document.getElementById('input');
   var cardsContent = document.getElementById("cardsContent");
+  
   cardsContent.scrollTop = cardsContent.scrollHeight;
+  
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     if (input.value) {
@@ -103,11 +105,13 @@
 
   socket.on('chat message', function (msg, senderName, senderID, stringDate) {
     console.log(stringDate)
+    
     var item = document.createElement('div');
     var avatar = document.createElement('div');
     var img = document.createElement('img');
     var subitem = document.createElement('div');
     var card = document.createElement('div');
+    
     avatar.className = "position-relative avatar";
     img.src = "/images/user.png";
     img.className = "img-fluid rounded-circle";
@@ -122,11 +126,13 @@
       card.classList.add('bg-secondary');
     }
     card.classList.add('text-white');
+    
     subitem.appendChild(card);
     avatar.appendChild(img);
     item.appendChild(avatar);
     item.appendChild(subitem);
     cardsContent.appendChild(item);
+    
     cardsContent.scrollTop = cardsContent.scrollHeight;
   });
 
