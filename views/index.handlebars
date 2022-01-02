@@ -53,7 +53,7 @@
             </div>
             {{#ifEquals this.userID this.currentUserID}}
             <div class="d-flex justify-content-end" style="position: absolute; top: 10px; right: 10px;">
-              <select id="{{this._id}}" onchange="setSelect(event)">
+              <select id="{{this._id}}" onchange="setSelect(event.target.id)">
                 <option value="default">-{{i18n "action"}}-</option>
                 <option value="edit/{{this._id}}">{{i18n "edit"}}</option>
                 <option value="delete/{{this._id}}">{{i18n "delete"}}</option>
@@ -129,20 +129,27 @@
   setTimeout(function () {
     $('#flash').remove();
   }, 3000);
+
   var socket = io();
   var form = document.getElementById('form');
   var input = document.getElementById('input');
   var cards_content = document.getElementById('cardsContent');
   var sortSelect = document.getElementById('sort');
   var postActionSelect = document.getElementById("postActionSelect");
+
   sortSelect.addEventListener('change', function () {
     for (var i = 1; i < cards_content.childNodes.length; i++) {
       cards_content.insertBefore(cards_content.childNodes[i], cards_content.firstChild);
     }
   })
 
-  function setSelect(event) {
-    var select = document.getElementById(event.target.id);
+  function setSelect(id) {
+    var select = document.getElementById(id);
+    console.log(select.value)
+    changeSelect(select)
+  };
+
+  function changeSelect(select) {
     if (select.value != "default") {
       var stringArr = (select.value).split('/')
       if (stringArr[0] == "delete") {
@@ -155,7 +162,7 @@
         $('#editPostModal').modal('show');
       }
     }
-  };
+  }
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -164,6 +171,7 @@
       input.value = '';
     }
   });
+
   socket.on('new post', function (post, senderID, senderName) {
     var item = document.createElement('div');
     var card_header = document.createElement('div');
@@ -185,30 +193,33 @@
     img.className = "img-fluid rounded-circle";
     img.src = "/images/user.png";
     img.alt = "";
-    avatar.appendChild(img);
-    flex_div.appendChild(avatar)
     if ("{{userID}}" == senderID) {
       name_ref.href = "/users/myProfile"
     } else {
       name_ref.href = "/users/user/" + senderID;
     }
     name_ref.textContent = senderName;
+    card_body.className = "card-body";
+    card_body.textContent = post;
+    var origcolor = card_body.style.backgroundColor;
+    card_body.style.backgroundColor = "yellow"
+        
+    avatar.appendChild(img);
+    flex_div.appendChild(avatar)
     sub_flex_div.appendChild(name_ref);
     sub_flex_div.appendChild(br);
     sub_flex_div.appendChild(text)
     flex_div.appendChild(sub_flex_div)
     card_header.appendChild(flex_div);
-    card_body.className = "card-body";
-    card_body.textContent = post;
     item.appendChild(card_header)
     item.appendChild(card_body)
+
     if (sortSelect.value == "newest") {
       cards_content.prepend(item);
     } else {
       cards_content.appendChild(item);
     }
-    var origcolor = card_body.style.backgroundColor;
-    card_body.style.backgroundColor = "yellow"
+
     setTimeout(function () {
       card_body.style.backgroundColor = origcolor;
     }, 3000)
@@ -218,5 +229,5 @@
     if("{{userID}}" == userID) {
       alert("{{i18n "post error"}}")
     }
-  })
+  });
 </script>
