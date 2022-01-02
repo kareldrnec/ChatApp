@@ -22,7 +22,7 @@
         <div class="pe-2">
           <div class="card d-inline-block p-2 px-3 m-1 bg-primary text-white" data-toggle="tooltip" data-placement="top"
             title="{{this.createdAt}}">
-            Me:<br>
+            <small>Me:</small><br>
             {{this.text}}
           </div>
         </div>
@@ -36,7 +36,7 @@
           <div>
             <div class="card d-inline-block p-2 px-3 m-1 bg-secondary text-white" data-toggle="tooltip"
               data-placement="top" title="{{this.createdAt}}">
-              {{this.sender}}:<br>
+              <small>{{this.sender}}:</small><br>
               {{this.text}}
             </div>
           </div>
@@ -77,19 +77,15 @@
       input.value = '';
     }
   });
-
   input.addEventListener('keydown', function (e) {
     socket.emit("typing", "{{conversationID}}", "{{currentUser}}", "{{senderName}}", 1);
   });
-
   input.addEventListener('keyup', function (e) {
     socket.emit("typing", "{{conversationID}}", "{{currentUser}}", "{{senderName}}", 0);
   });
-
   socket.on('connect', function () {
     socket.emit('room', "{{conversationID}}")
   });
-
   socket.on('display typing', function (senderID, name, key) {
     var typingEcho = document.getElementById("typingEcho");
     if ("{{currentUser}}" != senderID) {
@@ -102,31 +98,38 @@
       }
     }
   });
-
   socket.on('chat message', function (msg, senderName, senderID, stringDate) {
-    console.log(stringDate)
-    
     var item = document.createElement('div');
     var avatar = document.createElement('div');
     var img = document.createElement('img');
     var subitem = document.createElement('div');
     var card = document.createElement('div');
+    var chat_header = document.createElement('small');
+    var br = document.createElement('br');
     
     avatar.className = "position-relative avatar";
     img.src = "/images/user.png";
     img.className = "img-fluid rounded-circle";
     img.alt = "";
+    
     card.className = "card d-inline-block p-2 px-3 m-1";
-    card.textContent = msg;
     if (senderID === "{{currentUser}}") {
       item.className = "d-flex flex-row-reverse mb-4";
       card.classList.add('bg-primary');
+      chat_header.textContent = "Me:";
     } else {
       item.className = "d-flex flex-row mb-4";
       card.classList.add('bg-secondary');
+      chat_header.textContent = senderName + ":";
     }
     card.classList.add('text-white');
-    
+    card.setAttribute("data-toggle", "tooltip");
+    card.setAttribute("data-placement", "top");
+    card.setAttribute("title", stringDate);
+    card.appendChild(chat_header);
+    card.appendChild(br);
+    card.appendChild(document.createTextNode(msg));
+
     subitem.appendChild(card);
     avatar.appendChild(img);
     item.appendChild(avatar);

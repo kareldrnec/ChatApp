@@ -10,6 +10,8 @@ const cookieParser = require('cookie-parser')
 const session = require('express-session');
 const MongoStore = require('connect-mongodb-session')(session);
 const InitiateMongoServer = require('./config/db');
+const helmet = require('helmet');
+
 
 // Message/Post Controller
 const message_controller = require('./controllers/messageController');
@@ -92,6 +94,24 @@ app.use(express.json());
 
 //disable - mrknout na to
 //app.disable('x-powered-by');
+
+// HELMET
+const scriptSources = ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'code.jquery.com', 'stackpath.bootstrapcdn.com',
+        'cdnjs.cloudflare.com' ,'kit.fontawesome.com'];
+const styleSources = ["'self'", "'unsafe-inline'", 'stackpath.bootstrapcdn.com']
+
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: scriptSources,
+            styleSrc: styleSources,
+            fontSrc: ["'self'", 'https://ka-f.fontawesome.com'],
+            connectSrc: ["'self'", 'https://ka-f.fontawesome.com'],
+            imgSrc: ["'self'", 'data:']
+        }
+    }
+}))
 
 //routing
 app.use('/', require('./routes/index'));
