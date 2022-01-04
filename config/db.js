@@ -7,6 +7,7 @@ const mongoURI = "mongodb+srv://user1234:user1234@cluster0.gr9ky.mongodb.net/PWA
 
 const InitiateMongoServer = async () => {
     try {
+        //console.log(process.env.NODE)
         await mongoose.connect(mongoURI, {
             useNewUrlParser: true
         });
