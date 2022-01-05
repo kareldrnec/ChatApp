@@ -1,18 +1,16 @@
 //FILENAME : db.js
 
-const mongoose = require('mongoose');
+var mongoose = require('mongoose');
 
 //mongoURI
-const mongoURI = "mongodb+srv://user1234:user1234@cluster0.gr9ky.mongodb.net/PWA?retryWrites=true&w=majority";
+const mongoURI = process.env.MONGODB_URI;
 
-const InitiateMongoServer = async () => {
+const InitiateMongoServer = async() => {
     try {
-        //console.log(process.env.NODE)
         await mongoose.connect(mongoURI, {
             useNewUrlParser: true
         });
     } catch (e) {
-        console.log(e);
         throw e;
     }
 }

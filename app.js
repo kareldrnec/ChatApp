@@ -1,7 +1,6 @@
 //express - app.js
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 3000;
 const exphbs = require('express-handlebars');
 const http = require('http');
 const path = require('path');
@@ -9,10 +8,11 @@ const i18n = require('i18n');
 const cookieParser = require('cookie-parser')
 const session = require('express-session');
 const MongoStore = require('connect-mongodb-session')(session);
+const dotenv = require('dotenv').config();
 const InitiateMongoServer = require('./config/db');
 const helmet = require('helmet');
-
-
+const port = process.env.PORT || 3000;
+//console.log(dotenv.parsed)
 // Message/Post Controller
 const message_controller = require('./controllers/messageController');
 const post_controller = require('./controllers/postController');
@@ -52,10 +52,10 @@ app.engine('handlebars', exphbs({
     defaultLayout: 'main',
     extname: '.handlebars',
     helpers: {
-        i18n: function () {
+        i18n: function() {
             return i18n.__.apply(this, arguments);
         },
-        ifEquals: function (value1, value2, options) {
+        ifEquals: function(value1, value2, options) {
             return (value1 == value2) ? options.fn(this) : options.inverse(this);
         }
     }
@@ -97,7 +97,8 @@ app.use(express.json());
 
 // HELMET
 const scriptSources = ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'code.jquery.com', 'stackpath.bootstrapcdn.com',
-        'cdnjs.cloudflare.com' ,'kit.fontawesome.com'];
+    'cdnjs.cloudflare.com', 'kit.fontawesome.com'
+];
 const styleSources = ["'self'", "'unsafe-inline'", 'stackpath.bootstrapcdn.com']
 
 app.use(helmet({
