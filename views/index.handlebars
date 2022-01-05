@@ -30,11 +30,9 @@
         </select>
       </div>
       <div id="cardsContent">
-
         {{#each posts}}
         <div class="card mx-auto pt-1">
           <div class="card-header bg-light">
-
             <div class="d-flex justify-content-start">
               <div class="position-relative avatar">
                 <img src="/images/user.png" class="img-fluid rounded-circle" alt="">
@@ -52,9 +50,9 @@
             {{#ifEquals this.userID this.currentUserID}}
             <div class="d-flex justify-content-end" style="position: absolute; top: 10px; right: 10px;">
               <select id="{{this._id}}" onchange="setSelect(event.target.id)">
-                <option value="default">-{{i18n "action"}}-</option>
-                <option value="edit/{{this._id}}">{{i18n "edit"}}</option>
-                <option value="delete/{{this._id}}">{{i18n "delete"}}</option>
+                <option value="default">-{{#with ..}}{{i18n "action"}}{{/with}}-</option>
+                <option value="edit/{{this._id}}">{{#with ..}}{{i18n "edit"}}{{/with}}</option>
+                <option value="delete/{{this._id}}">{{#with ..}}{{i18n "delete"}}{{/with}}</option>
               </select>
             </div>
             {{/ifEquals}}
@@ -68,7 +66,6 @@
     </div>
   </div>
 </div>
-
 
 <!-- Modal Delete Post -->
 <div class="modal fade" id="deletePostModal" tabindex="-1" role="dialog" aria-labelledby="deletePostModalLabel"
@@ -143,9 +140,9 @@
 
   function setSelect(id) {
     var select = document.getElementById(id);
-    console.log(select.value)
     changeSelect(select)
   };
+  // Mozna zmenit
 
   function changeSelect(select) {
     if (select.value != "default") {
