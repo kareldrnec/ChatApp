@@ -10,14 +10,14 @@ describe('Login API', function() {
             .set('Accept', 'application/json')
             .set('Content-Type', 'application/json')
             .send({ email: 'karel.drnec@tul.cz', password: 'ahoj' })
-            .redirects(0)
             .expect(function(response) {
                 expect(response).to.have.status(302)
+                expect(response.body).to.be('Array')
                 done();
             })
     });
 
     it('should create a new user', function(done) {
-
+        done()
     })
 })
