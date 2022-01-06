@@ -1,7 +1,7 @@
 ##########################################
 # Ignore files related to API keys
 ##########################################
-.env
+#.env
 
 ##########################################
 # Ignore node_modules folder (depedencies)
