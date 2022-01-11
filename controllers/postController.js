@@ -1,9 +1,11 @@
 // post controller
 const PostModel = require('../models/post');
 var app = require('../app');
+var mongoSanitize = require('express-mongo-sanitize')
 
 // ADD new post
-exports.addNewPost = async (post, userID, username) => {
+exports.addNewPost = async(post, userID, username) => {
+    mongoSanitize(post)
     try {
         let postDB = new PostModel({
             userID: userID,
@@ -17,7 +19,7 @@ exports.addNewPost = async (post, userID, username) => {
 };
 
 // EDIT selected post
-exports.editSelectedPost = async (req, res, next) => {
+exports.editSelectedPost = async(req, res, next) => {
     let update = {
         postContent: req.body.editPostInput
     };
@@ -31,7 +33,7 @@ exports.editSelectedPost = async (req, res, next) => {
 };
 
 // DELETE selected post
-exports.deleteSelectedPost = async (req, res, next) => {
+exports.deleteSelectedPost = async(req, res, next) => {
     try {
         await PostModel.findByIdAndDelete(req.params.id);
         req.session.flash = { type: 'success', text: req.__("deleted post") };

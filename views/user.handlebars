@@ -1,17 +1,17 @@
-{{> navbar}}
+{{> navbar_index}}
 
 <div class="d-flex justify-content-center mt-5">
     <div class="card" style="width: 18rem;">
         <div class="card-body">
             <div class="text-center">
-                <h5 class="card-title">{{ username }} {{ surname }}</h5>
+                <h5 class="card-title">{{ profileName }}</h5>
             </div>
             <small>{{i18n "personal info"}}</small>
             <p class="card-text">
                 {{#if info}}
                 {{ info }}
                 {{else}}
-                No personal info :(
+                {{i18n "no personal info"}}
                 {{/if}}
             </p>     
             <hr class="solid">

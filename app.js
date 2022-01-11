@@ -25,17 +25,15 @@ const options = {
         info: {
             title: "ChatApp API with Swagger",
             version: "0.1.0",
-            description: 
-                "This is a simple Chat Application made with Express and documented with Swagger"
+            description: "This is a simple Chat Application made with Express and documented with Swagger"
         },
-        servers: [
-            {
-                url: "http://localhost/3000"
-            }
-        ]
+        servers: [{
+            url: "http://localhost/3000"
+        }]
     },
     apis: ["./routes/*.js", "./models/*.js"]
 }
+
 const specs = swaggerJsdoc(options);
 app.use(
     "/api-docs",
@@ -123,9 +121,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.use(methodOverride('_method'));
-app.use(mongoSanitize({
-    replaceWith: '_'
-}));
+
 // SECURITY
 // helmet.js
 const scriptSources = ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'code.jquery.com', 'stackpath.bootstrapcdn.com',

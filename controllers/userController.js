@@ -4,8 +4,9 @@ const PostModel = require('../models/post');
 const MessageModel = require('../models/message');
 const ConversationModel = require('../models/conversation');
 const bcrypt = require('bcryptjs');
+const { body, validationResult } = require('express-validator');
 
-exports.registerNewUser = async (req, res, next) => {
+exports.registerNewUser = async(req, res, next) => {
     const salt = await bcrypt.genSalt(10);
     const { userName, userSurname, email, password, confirmPassword } = req.body;
     try {
@@ -39,7 +40,7 @@ exports.registerNewUser = async (req, res, next) => {
     }
 };
 
-exports.loginUser = async (req, res, next) => {
+exports.loginUser = async(req, res, next) => {
     const { email, password } = req.body;
     try {
         const user = await UserModel.findOne({ email });
@@ -68,9 +69,9 @@ exports.loginUser = async (req, res, next) => {
 
 // Logout - 
 // session destroy
-exports.logout = function (req, res, next) {
+exports.logout = function(req, res, next) {
     if (req.session) {
-        req.session.destroy(function (err) {
+        req.session.destroy(function(err) {
             if (err) {
                 return next(err);
             } else {
@@ -81,7 +82,7 @@ exports.logout = function (req, res, next) {
 };
 
 // SHOW my profile
-exports.myProfile = async (req, res, next) => {
+exports.myProfile = async(req, res, next) => {
     try {
         let user = await UserModel.findById(req.session.userId);
         let date = user.createdAt;
@@ -99,7 +100,7 @@ exports.myProfile = async (req, res, next) => {
 };
 
 // EDIT personal info
-exports.editPersonalInfo = async (req, res, next) => {
+exports.editPersonalInfo = async(req, res, next) => {
     let query = { "_id": req.session.userId };
     let personalInfoText = req.body.personalInfoText;
     let update = {
@@ -115,14 +116,15 @@ exports.editPersonalInfo = async (req, res, next) => {
 };
 
 // SHOW user
-exports.showUser = async (req, res, next) => {
+exports.showUser = async(req, res, next) => {
     try {
+        let currentUser = await UserModel.findById(req.session.userId);
         let user = await UserModel.findById(req.params.id);
         let date = user.createdAt;
         let stringDate = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
         return res.render("user", {
-            username: user.userName,
-            surname: user.userSurname,
+            username: currentUser.userName + " " + currentUser.userSurname,
+            profileName: user.userName + " " + user.userSurname,
             info: user.personalInfo,
             email: user.email,
             created: stringDate
@@ -133,7 +135,7 @@ exports.showUser = async (req, res, next) => {
 }
 
 // DELETE account
-exports.deleteAccount = async (req, res, next) => {
+exports.deleteAccount = async(req, res, next) => {
     try {
         await PostModel.deleteMany({
             userID: req.session.userId
