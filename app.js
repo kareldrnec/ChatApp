@@ -1,4 +1,4 @@
-//express - app.js
+//express - app.js (SERVER)
 const express = require('express');
 const exphbs = require('express-handlebars');
 const http = require('http');
@@ -13,12 +13,13 @@ const helmet = require('helmet');
 const port = process.env.PORT || 3000;
 const methodOverride = require('method-override');
 const mongoSanitize = require('express-mongo-sanitize');
-
 const app = express();
+
 // Swagger
 var swaggerJsdoc = require("swagger-jsdoc");
 var swaggerUi = require("swagger-ui-express");
 
+// Swagger options
 const options = {
     definition: {
         openapi: "3.0.0",
@@ -35,6 +36,8 @@ const options = {
 }
 
 const specs = swaggerJsdoc(options);
+
+// serve Swagger documentation
 app.use(
     "/api-docs",
     swaggerUi.serve,
@@ -45,14 +48,16 @@ app.use(
 const message_controller = require('./controllers/messageController');
 const post_controller = require('./controllers/postController');
 
-// socket.io priprava
+// socket.io prepare
 const server = http.createServer(app);
 const { Server } = require("socket.io");
+
 //server listen
 server.listen(port, () => {
     console.log('Example app listening at PORT 3000')
 });
 
+// setting socket.io
 var io = new Server(server);
 exports.io = io;
 
@@ -65,21 +70,26 @@ io.on("connection", (socket) => {
     socket.on('new post', post_controller.addNewPost);
 });
 
-//i18n configure
+// i18n configure
 i18n.configure({
     locales: ['en', 'cz'],
     cookie: 'locale',
     directory: path.join(__dirname, '/locales'),
     defaultLocale: 'en'
 })
+
+// cookie parser
 app.use(cookieParser());
+
+// i18n init
 app.use(i18n.init);
 
-//setting handlebars engine
+// setting handlebars engine
 app.engine('handlebars', exphbs({
     defaultLayout: 'main',
     extname: '.handlebars',
     helpers: {
+        // helpers
         i18n: function() {
             return i18n.__.apply(this, arguments);
         },
@@ -89,18 +99,22 @@ app.engine('handlebars', exphbs({
     }
 }));
 
+// set view engine
 app.set('view engine', 'handlebars');
 
+// serve static files
 app.use(express.static(path.join(__dirname, '/public')));
 
-//mongodb
+// mongodb init
 InitiateMongoServer();
 
+// store sessions
 const store = new MongoStore({
-    uri: "mongodb+srv://user1234:user1234@cluster0.gr9ky.mongodb.net/PWA?retryWrites=true&w=majority",
+    uri: process.env.MONGODB_URI,
     collection: "mySession"
 });
 
+// session
 app.use(session({
     secret: 'SECRET KEY',
     resave: false,
@@ -108,7 +122,7 @@ app.use(session({
     store: store
 }));
 
-//express-flash-message
+// express-flash-message
 app.use((req, res, next) => {
     if (req.session.flash) {
         res.locals.flash = req.session.flash;
@@ -120,9 +134,12 @@ app.use((req, res, next) => {
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+// express-mongo-sanitize
+app.use(mongoSanitize());
+
+// method override POST TO PUT/DELETE
 app.use(methodOverride('_method'));
 
-// SECURITY
 // helmet.js
 const scriptSources = ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'code.jquery.com', 'stackpath.bootstrapcdn.com',
     'cdnjs.cloudflare.com', 'kit.fontawesome.com'
@@ -142,13 +159,13 @@ app.use(helmet({
     }
 }))
 
-//routing
+// routing
 app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
 app.use('/posts', require('./routes/posts'));
 app.use('/conversations', require('./routes/conversations'));
 
-//error page handlers
+// error page handling - 500
 app.use((err, req, res, next) => {
     return res.status(500).render('error', {
         title: req.__("error"),
@@ -157,6 +174,7 @@ app.use((err, req, res, next) => {
     });
 });
 
+// error page handling - 404
 app.use((req, res, next) => {
     return res.status(404).render('error', {
         title: req.__("error"),

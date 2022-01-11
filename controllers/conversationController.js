@@ -4,7 +4,7 @@ const UserModel = require('../models/user');
 const MessageModel = require('../models/message');
 
 // SHOW all conversations
-exports.showAll = async (req, res, next) => {
+exports.showAll = async(req, res, next) => {
     var users = [],
         conversations = [],
         membersArr = [];
@@ -54,7 +54,7 @@ exports.showAll = async (req, res, next) => {
 }
 
 // CREATE a new conversation or redirect to existing one
-exports.create = async (req, res, next) => {
+exports.create = async(req, res, next) => {
     try {
         var user = await UserModel.findById(req.session.userId);
         var conversation = await ConversationModel.findOne({
@@ -77,7 +77,7 @@ exports.create = async (req, res, next) => {
 };
 
 // CREATE a new group conversation or redirect to existing one
-exports.createGroup = async (req, res, next) => {
+exports.createGroup = async(req, res, next) => {
     try {
         var selection = req.body.groupSelect
         if (selection && Array.isArray(selection)) {
@@ -88,7 +88,7 @@ exports.createGroup = async (req, res, next) => {
             var conversation = await ConversationModel.findOne({
                 members: { $all: membersArr }
             });
-            if(!conversation) {
+            if (!conversation) {
                 var conversation = new ConversationModel({
                     type: "group",
                     members: membersArr
@@ -100,7 +100,7 @@ exports.createGroup = async (req, res, next) => {
             }
             return res.redirect('/conversations/' + conversation._id);
         } else {
-            req.session.flash = { type: 'danger', text: req.__("group chat error") }; 
+            req.session.flash = { type: 'danger', text: req.__("group chat error") };
         }
         return res.redirect('/conversations')
     } catch (err) {
@@ -109,7 +109,7 @@ exports.createGroup = async (req, res, next) => {
 }
 
 // OPEN selected conversation
-exports.select = async (req, res, next) => {
+exports.select = async(req, res, next) => {
     var messages = [];
     try {
         var sender = await UserModel.findById(req.session.userId);
@@ -141,7 +141,7 @@ exports.select = async (req, res, next) => {
 }
 
 // DELETE selected conversation + messages in selected conversation
-exports.delete = async (req, res, next) => {
+exports.delete = async(req, res, next) => {
     try {
         await MessageModel.deleteMany({
             conversationID: req.params.id

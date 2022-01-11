@@ -4,7 +4,7 @@ const PostModel = require('../models/post');
 const MessageModel = require('../models/message');
 const ConversationModel = require('../models/conversation');
 const bcrypt = require('bcryptjs');
-const { body, validationResult } = require('express-validator');
+var validator = require('validator');
 
 exports.registerNewUser = async(req, res, next) => {
     const salt = await bcrypt.genSalt(10);
@@ -104,7 +104,7 @@ exports.editPersonalInfo = async(req, res, next) => {
     let query = { "_id": req.session.userId };
     let personalInfoText = req.body.personalInfoText;
     let update = {
-        personalInfo: personalInfoText
+        personalInfo: validator.escape(personalInfoText)
     };
     try {
         await UserModel.updateOne(query, update);

@@ -1,11 +1,11 @@
 // post controller
 const PostModel = require('../models/post');
 var app = require('../app');
-var mongoSanitize = require('express-mongo-sanitize')
+var validator = require('validator');
 
 // ADD new post
 exports.addNewPost = async(post, userID, username) => {
-    mongoSanitize(post)
+    var post = validator.escape(post);
     try {
         let postDB = new PostModel({
             userID: userID,
@@ -21,7 +21,7 @@ exports.addNewPost = async(post, userID, username) => {
 // EDIT selected post
 exports.editSelectedPost = async(req, res, next) => {
     let update = {
-        postContent: req.body.editPostInput
+        postContent: validator.escape(req.body.editPostInput)
     };
     try {
         await PostModel.findByIdAndUpdate(req.params.id, update);

@@ -1,8 +1,9 @@
 // view controller
 const UserModel = require('../models/user');
 const PostModel = require('../models/post');
+var validator = require('validator');
 
-exports.getIndexPage = async (req, res, next) => {
+exports.getIndexPage = async(req, res, next) => {
     let posts = [];
     try {
         let currentUser = await UserModel.findById(req.session.userId);
@@ -16,7 +17,7 @@ exports.getIndexPage = async (req, res, next) => {
                 "userID": postsDB[i].userID,
                 "username": user.userName,
                 "usersurname": user.userSurname,
-                "postContent": postsDB[i].postContent,
+                "postContent": validator.escape(postsDB[i].postContent),
                 "created": date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes()
             })
         }
@@ -31,7 +32,7 @@ exports.getIndexPage = async (req, res, next) => {
     }
 };
 
-exports.getSettings = async (req, res, next) => {
+exports.getSettings = async(req, res, next) => {
     try {
         let currentUser = await UserModel.findById(req.session.userId);
         return res.render('settings', {
@@ -44,10 +45,10 @@ exports.getSettings = async (req, res, next) => {
     }
 }
 
-exports.applySettings = function (req, res) {
+exports.applySettings = function(req, res) {
     try {
         res.cookie("locale", req.body.languages);
-        req.session.flash = { type: 'success', text: req.__("language changed")};
+        req.session.flash = { type: 'success', text: req.__("language changed") };
         res.redirect("/settings");
     } catch (err) {
         return next(err);

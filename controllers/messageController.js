@@ -1,9 +1,11 @@
 // message controller
 const MessageModel = require('../models/message')
 var app = require('../app');
+var validator = require('validator');
 
 // SEND message
 exports.sendMessage = async(msg, senderName, senderID, conversationID) => {
+    var msg = validator.escape(msg);
     try {
         let message = new MessageModel({
             text: msg,
