@@ -12,6 +12,7 @@ const InitiateMongoServer = require('./config/db');
 const helmet = require('helmet');
 const port = process.env.PORT || 3000;
 const methodOverride = require('method-override');
+const mongoSanitize = require('express-mongo-sanitize');
 
 const app = express();
 // Swagger
@@ -122,7 +123,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.use(methodOverride('_method'));
-
+app.use(mongoSanitize({
+    replaceWith: '_'
+}));
 // SECURITY
 // helmet.js
 const scriptSources = ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'code.jquery.com', 'stackpath.bootstrapcdn.com',

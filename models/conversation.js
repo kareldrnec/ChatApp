@@ -11,7 +11,7 @@
  *          properties:
  *              _id:
  *                  type: string
- *                  description: The auto-generated id of the conversation
+ *                  description: The auto-generated ID of the conversation
  *              type:
  *                  type: string
  *                  description: What's the type of the conversation? (normal/group)
