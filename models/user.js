@@ -5,13 +5,14 @@
  *          User:
  *              type: object
  *              required:
+ *                  - _id
  *                  - userName
  *                  - userSurname
  *                  - email
  *                  - password
  *              properties:
  *                  _id:
- *                      type: object
+ *                      type: string
  *                      description: The auto-generated ID of the user
  *                  userName:
  *                      type: string
@@ -21,20 +22,22 @@
  *                      description: What is user's surname?
  *                  email:
  *                      type: string
+ *                      format: email
  *                      description: What is user's email?
  *                  password:
  *                      type: string
+ *                      format: password
  *                      description: What is user's password?
  *                  personalInfo:
  *                      type: string
  *                      description: What is user's personal information?
  *                  createdAt:
  *                      type: string
- *                      format: date
+ *                      format: date-time
  *                      description: When was the user account created?
  */
- var mongoose = require('mongoose');
- var Schema = mongoose.Schema;
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
     userName: {

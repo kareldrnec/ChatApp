@@ -10,18 +10,20 @@
  *              - members
  *          properties:
  *              _id:
- *                  type: object
+ *                  type: string
  *                  description: The auto-generated id of the conversation
  *              type:
  *                  type: string
- *                  items:
  *                  description: What's the type of the conversation? (normal/group)
  *              members:
  *                  type: array
+ *                  items: 
+ *                      type: string
+ *                  minItems: 2
  *                  description: Who is in the conversation? (Array of user IDs)
  *              createdAt:
  *                  type: string
- *                  format: date
+ *                  format: date-time
  *                  description: When was the conversation created?
  *       
  */

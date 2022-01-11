@@ -26,7 +26,7 @@ router.get("/", auth.requiresLogin, conversation_controller.showAll);
 /**
  * @swagger
  *  /delete/:id:
- *      get:
+ *      delete:
  *          summary: Delete a conversation
  *          tags: [Conversations]
  *          description: Delete a conversation (including messages)

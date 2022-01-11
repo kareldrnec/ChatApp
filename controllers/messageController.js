@@ -27,4 +27,3 @@ exports.typing = function(room, senderID, senderName, key) {
         app.io.emit('error occurred', senderID);
     }
 }
-

@@ -93,7 +93,7 @@ router.get("/myProfile", auth.requiresLogin, user_controller.myProfile);
 /**
  * @swagger
  *  /myProfile:
- *      post:
+ *      put:
  *          summary: Update my profile page.
  *          tags: [Users]
  *          description: Update my profile page.
@@ -102,13 +102,13 @@ router.put("/myProfile", auth.requiresLogin, user_controller.editPersonalInfo);
 
 /**
  * @swagger
- *  /deleteAccount:
- *      get:
+ *  /myProfile:
+ *      delete:
  *          summary: Delete my account.
  *          tags: [Users]
  *          description: Delete my account.
  */
-router.delete("/deleteAccount", auth.requiresLogin, user_controller.deleteAccount);
+router.delete("/myProfile", auth.requiresLogin, user_controller.deleteAccount);
 
 /**
  * @swagger

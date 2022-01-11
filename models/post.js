@@ -5,28 +5,29 @@
  *          Post:
  *              type: object
  *              required:
+ *                  - _id
  *                  - userID
  *                  - postContent
  *              properties:
  *                  _id:
- *                     type: object
+ *                     type: string
  *                     description: The auto-generated ID of the post
  *                  userID:
- *                      type: object
+ *                      type: string
  *                      description: Who wrote the post?
  *                  postContent:
  *                      type: string
  *                      description: What's in the post?
  *                  createdAt:
  *                      type: string
- *                      format: date
+ *                      format: date-time
  *                      description: When was the post created?
  * 
  */
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
- 
+
 var postSchema = new Schema({
     userID: {
         type: String,

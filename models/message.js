@@ -5,25 +5,26 @@
  *          Message:
  *              type: object
  *              required:
+ *                  - _id
  *                  - text
  *                  - conversationID
  *                  - senderID
  *              properties:
  *                  _id:
- *                      type: object
+ *                      type: string
  *                      description: The auto-generated ID of the message
  *                  text:
  *                      type: string
  *                      description: What's in the message?
  *                  conversationID:
- *                      type: object
+ *                      type: string
  *                      description: To which conversation does the message belong?
  *                  senderID:
- *                      type: object
+ *                      type: string
  *                      description: Who sends the message?
  *                  createdAt:
  *                      type: string
- *                      format: date
+ *                      format: date-time
  *                      description: When was the message sent?
  */
 

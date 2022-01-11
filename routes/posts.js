@@ -24,8 +24,9 @@ var post_controller = require('../controllers/postController');
 router.delete("/delete/:id", auth.requiresLogin, post_controller.deleteSelectedPost);
 
 /**
+ * @swagger
  * /edit/:id:
- *      post: 
+ *      put: 
  *          summary: Edit a post
  *          tags: [Posts]
  *          description: Edit a post
