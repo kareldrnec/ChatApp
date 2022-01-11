@@ -1,8 +1,32 @@
-// schema of post
+/**
+ * @swagger
+ *  components:
+ *      schemas:
+ *          Post:
+ *              type: object
+ *              required:
+ *                  - userID
+ *                  - postContent
+ *              properties:
+ *                  _id:
+ *                     type: object
+ *                     description: The auto-generated ID of the post
+ *                  userID:
+ *                      type: object
+ *                      description: Who wrote the post?
+ *                  postContent:
+ *                      type: string
+ *                      description: What's in the post?
+ *                  createdAt:
+ *                      type: string
+ *                      format: date
+ *                      description: When was the post created?
+ * 
+ */
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-
+ 
 var postSchema = new Schema({
     userID: {
         type: String,

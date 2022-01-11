@@ -46,11 +46,11 @@
                   {{i18n "choose"}}
                 {{/with}}
               </a>
-              <a href="/conversations/delete/{{this.conversationID}}" class="btn btn-primary">
+              <button class="btn btn-primary" id="{{this.conversationID}}" onclick="openDeleteConversation(event)">
                 {{#with ..}}
                   {{i18n "delete"}}
                 {{/with}}
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -129,6 +129,32 @@
   </div>
 </div>
 
+<!-- Delete Conversation Modal -->
+<div class="modal fade" id="deleteChatModal" tabindex="-1" role="dialog" aria-labelledby="deleteChatModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteChatModalLabel">{{i18n "delete chat"}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="post" id="deleteChatForm">
+        <div class="modal-body">
+          <div class="text-center">
+            {{i18n "delete chat question"}}
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">{{i18n "close"}}</button>
+          <input type="submit" class="btn btn-primary" value="{{i18n "delete"}}">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <script>
   setTimeout(function () {
     $('#flash').remove();
@@ -139,4 +165,9 @@
     document.getElementById("username").value = event.srcElement[selectedIndex].label;
     document.getElementById("userDetails").href = "/users/user/" + event.target.value;
   })
+
+  function openDeleteConversation(event) {
+    $('#deleteChatForm').attr("action", "/conversations/delete/" + event.target.id + "/?_method=DELETE");
+    $('#deleteChatModal').modal('show')
+  }
 </script>

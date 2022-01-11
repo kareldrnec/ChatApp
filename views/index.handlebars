@@ -131,6 +131,7 @@
   var cards_content = document.getElementById('cardsContent');
   var sortSelect = document.getElementById('sort');
   var postActionSelect = document.getElementById("postActionSelect");
+  var deletePostForm = document.getElementById("deletePostForm");
 
   sortSelect.addEventListener('change', function () {
     for (var i = 1; i < cards_content.childNodes.length; i++) {
@@ -148,10 +149,10 @@
     if (select.value != "default") {
       var stringArr = (select.value).split('/')
       if (stringArr[0] == "delete") {
-        $('#deletePostForm').attr("action", "/posts/" + select.value);
+        $('#deletePostForm').attr("action", "/posts/delete/" + stringArr[1] + '/?_method=DELETE');
         $('#deletePostModal').modal('show');
       } else {
-        $('#editPostForm').attr("action", "/posts/" + select.value);
+        $('#editPostForm').attr("action", "/posts/edit/" + stringArr[1] + '/?_method=PUT');
         var textValue = document.getElementsByName(stringArr[1])[0].textContent
         document.getElementById("editPostInput").value = textValue.replace(/[\n\r]+|[\s]{2,}/g, ' ').trim()
         $('#editPostModal').modal('show');

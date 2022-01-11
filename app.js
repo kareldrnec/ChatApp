@@ -1,6 +1,5 @@
 //express - app.js
 const express = require('express');
-const app = express();
 const exphbs = require('express-handlebars');
 const http = require('http');
 const path = require('path');
@@ -12,7 +11,37 @@ const dotenv = require('dotenv').config();
 const InitiateMongoServer = require('./config/db');
 const helmet = require('helmet');
 const port = process.env.PORT || 3000;
-//console.log(dotenv.parsed)
+const methodOverride = require('method-override');
+
+const app = express();
+// Swagger
+var swaggerJsdoc = require("swagger-jsdoc");
+var swaggerUi = require("swagger-ui-express");
+
+const options = {
+    definition: {
+        openapi: "3.0.0",
+        info: {
+            title: "ChatApp API with Swagger",
+            version: "0.1.0",
+            description: 
+                "This is a simple Chat Application made with Express and documented with Swagger"
+        },
+        servers: [
+            {
+                url: "http://localhost/3000"
+            }
+        ]
+    },
+    apis: ["./routes/*.js", "./models/*.js"]
+}
+const specs = swaggerJsdoc(options);
+app.use(
+    "/api-docs",
+    swaggerUi.serve,
+    swaggerUi.setup(specs));
+
+
 // Message/Post Controller
 const message_controller = require('./controllers/messageController');
 const post_controller = require('./controllers/postController');
@@ -92,10 +121,10 @@ app.use((req, res, next) => {
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-//disable - mrknout na to
-//app.disable('x-powered-by');
+app.use(methodOverride('_method'));
 
-// HELMET
+// SECURITY
+// helmet.js
 const scriptSources = ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'code.jquery.com', 'stackpath.bootstrapcdn.com',
     'cdnjs.cloudflare.com', 'kit.fontawesome.com'
 ];
@@ -121,7 +150,6 @@ app.use('/posts', require('./routes/posts'));
 app.use('/conversations', require('./routes/conversations'));
 
 //error page handlers
-//dodelat
 app.use((err, req, res, next) => {
     return res.status(500).render('error', {
         title: req.__("error"),

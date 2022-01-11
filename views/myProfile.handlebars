@@ -18,7 +18,7 @@
                 {{#if info}}
                 {{ info }}
                 {{else}}
-                No personal info :(
+                {{i18n "no personal info"}}
                 {{/if}}
             </p>
             <hr class="solid">
@@ -29,11 +29,10 @@
             {{ created }}
             <hr class="solid">
             <div class="text-center">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#personalInfoModal"><i
+                <button type="button" class="btn btn-primary" onclick="editAccount()"><i
                         class="far fa-edit"></i> {{i18n "information"}}</button>
                 <hr class="solid">
-                <button type="button" class="btn btn-primary" data-toggle="modal"
-                    data-target="#deleteAccountModal">{{i18n "delete account"}}</button>
+                <button type="button" class="btn btn-primary" onclick="deleteAccount()">{{i18n "delete account"}}</button>
             </div>
         </div>
     </div>
@@ -52,7 +51,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="/users/myProfile" method="post">
+                    <form action="/users/myProfile" method="POST" id="editAccountForm">
                         <label for="personalInfoText">{{i18n "personal info"}}</label>
                         <input type="text" id="personalInfoText" name="personalInfoText" class="form-control" value="{{info}}">
                         <div class="modal-footer">
@@ -80,7 +79,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="/users/deleteAccount">
+                    <form action="/users/deleteAccount" id="deleteAccountForm" method="POST">
                         <div class="text-center">
                             {{i18n "delete account question"}}
                         </div>
@@ -96,7 +95,19 @@
 </div>
 
 <script> 
+
     setTimeout(function () {
         $('#flash').remove();
     }, 3000);
+
+    function deleteAccount() {
+        $('#deleteAccountForm').attr("action", "/users/deleteAccount" + "/?_method=DELETE");
+        $('#deleteAccountModal').modal('show');
+    }
+
+    function editAccount() {
+        $('#editAccountForm').attr("action", "/users/myProfile" + "/?_method=PUT");
+        $('#personalInfoModal').modal('show');
+    }
+
 </script>
